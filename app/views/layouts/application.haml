@@ -1,0 +1,10 @@
+!!!
+%html{:lang => "en"}
+  %head
+    %title= t('app.title') + " - #{params[:controller].humanize}"
+    = stylesheet_link_tag "application", media: "all",
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+    = yield :head
+  %body
+    = yield
