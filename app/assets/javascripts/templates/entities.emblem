@@ -1,0 +1,5 @@
+h1=t view.entities.header
+each record in controller.content
+  =record.id
+  =record.name
+  =record.description

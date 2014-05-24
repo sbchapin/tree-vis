@@ -7,4 +7,5 @@
 #= require_tree ./templates
 #= require_tree ./routes
 #= require ./router
+#= require ./i18n.en 
 #= require_self

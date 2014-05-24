@@ -21,7 +21,6 @@ end
 # Use jquery as the JavaScript library
 # JS
 gem 'jquery-rails'
-gem 'jquery-ui-rails'
 gem 'execjs'
 gem 'therubyracer'
 
