@@ -21,10 +21,8 @@ class EntitiesController < ApplicationController
 
     respond_to do |format|
       if @entity.save
-        format.html { redirect_to @entity, notice: 'Entity was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @entity }
+        format.json { render json: @entity, status: :created}
       else
-        format.html { render action: 'new' }
         format.json { render json: @entity.errors, status: :unprocessable_entity }
       end
     end
@@ -35,10 +33,8 @@ class EntitiesController < ApplicationController
   def update
     respond_to do |format|
       if @entity.update(entity_params)
-        format.html { redirect_to @entity, notice: 'Entity was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render action: 'edit' }
         format.json { render json: @entity.errors, status: :unprocessable_entity }
       end
     end
@@ -61,6 +57,6 @@ class EntitiesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def entity_params
-      params.require(:entity).permit(:name, :description)
+      params.require(:entity).permit(:name, :description, :x, :y)
     end
 end

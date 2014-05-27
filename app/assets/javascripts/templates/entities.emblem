@@ -1,5 +1,15 @@
 h1=t view.entities.header
-each record in controller.content
-  =record.id
-  =record.name
-  =record.description
+if isDirty
+  span.btn click=rejectChanges
+    =t 'view.generic.rejectAll'
+  |  | 
+  span.btn click=saveChanges
+    =t 'view.generic.saveAll'
+  |  | 
+span.btn click=newEntity
+  =t 'view.generic.new'
+
+div.entities#entities
+  each record in controller.content
+    =with record
+      =render "entity" record

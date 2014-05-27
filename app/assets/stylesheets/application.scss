@@ -11,3 +11,11 @@
  *= require_self
  *= require_tree .
  */
+
+.entities{
+	position: relative;
+	.entity{
+		display: block;
+		position: absolute;
+	}
+}

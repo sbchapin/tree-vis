@@ -11,13 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140524081325) do
+ActiveRecord::Schema.define(version: 20140527084146) do
 
   create_table "entities", force: true do |t|
     t.string   "name"
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.float    "x"
+    t.float    "y"
   end
 
 end

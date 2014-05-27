@@ -1,0 +1,31 @@
+.entity id=view.windowId style=view.positioningStyle
+  .endpoint.endpoint-target id=view.endpointTargetId
+  .endpoint.endpoint-source id=view.endpointSourceId
+  form submit=saveChanges
+    dl
+      dt=t model.attributes.entities.id
+      dd=id
+      dt=t model.attributes.entities.name
+      dd
+        =input type="text" valueBinding="name" placeholderTranslation="model.attributes.entities.name" class='input entity-name'
+      dt=t model.attributes.entities.description
+      dd
+        =input type="text" valueBinding="description" placeholderTranslation="model.attributes.entities.description"  class='input entity-description'
+      dt=t model.meta.isDirty
+      dd=isDirty
+      p
+        | x:
+        =x
+        | , y:
+        =y
+
+      span.btn click=deleteEntity
+        =t 'view.generic.delete'
+      if isDirty
+        |  | 
+        span.btn click=rejectChanges
+          =t 'view.generic.reject'
+        |  | 
+        button.btn
+          =t 'view.generic.save'
+

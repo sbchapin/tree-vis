@@ -1,4 +1,7 @@
 #= require jquery
+#= require jquery.ui.draggable
+#= require jquery.ui.droppable
+#= require jquery-jsplumb-1.6.2-min
 #= require handlebars
 #= require ember
 #= require ember-data
@@ -18,3 +21,9 @@ App.ApplicationStore = DS.Store.extend({})
 
 # Add i18n to text fields
 Em.TextField.reopen(Em.I18n.TranslateableAttributes)
+
+#Rails CSRF token fix
+$ ->
+  token = $('meta[name="csrf-token"]').attr('content')
+  $.ajaxPrefilter (options, originalOptions, xhr) ->
+    xhr.setRequestHeader('X-CSRF-Token', token)

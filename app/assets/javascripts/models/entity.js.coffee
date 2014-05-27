@@ -3,3 +3,5 @@
 App.Entity = DS.Model.extend
   name: DS.attr 'string'
   description: DS.attr 'string'
+  x: DS.attr 'number'
+  y: DS.attr 'number'

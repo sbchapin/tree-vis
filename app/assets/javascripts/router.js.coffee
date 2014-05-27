@@ -11,5 +11,6 @@ App.Router.map ->
 
 #DOCS
 App.EntitiesRoute = Ember.Route.extend
-  setupController: (controller) -> controller
+  # setupController: (controller) -> controller
+  model: (params) -> @store.find('entity')
 
