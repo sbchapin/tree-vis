@@ -19,10 +19,12 @@
         | , y:
         =y
 
-      span.btn click=deleteEntity
-        =t 'view.generic.delete'
+      unless isNew
+        span.btn click=deleteEntity
+          =t 'view.generic.delete'
       if isDirty
-        |  | 
+        unless isNew
+          |  | 
         span.btn click=rejectChanges
           =t 'view.generic.reject'
         |  | 

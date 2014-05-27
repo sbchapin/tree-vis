@@ -19,5 +19,20 @@ App.EntityView = Ember.View.extend
   	@set('controller.x', pos.left)
   	@set('controller.y', pos.top)
 
-  #relocate when x and y updated
-  relocate: ( () -> console.log $("##{@get('windowId')}") ).observes('controller.x controller.y').on('init')
+  didInsertElement: -> 
+    jsPlumb.ready =>
+      #get instance from parent view
+      instance = @get('parentView.instance')
+
+      # suspend drawing and initialise.
+      instance.doWhileSuspended =>
+        $this = $("##{@get('windowId')}")
+        instance.draggable $this
+
+        for endpoint in $this.find('.endpoint-source')
+          instance.makeSource(endpoint, { parent: endpoint.parentNode, anchor: "Continuous" })
+
+        instance.makeTarget($this, { anchor: "Continuous" })
+
+        # instance.connect({ source: 'entity1', target: 'entity2' })
+
