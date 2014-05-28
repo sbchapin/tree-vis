@@ -1,15 +1,14 @@
-h1=t view.entities.header
-if isDirty
-  span.btn click=rejectChanges
-    =t 'view.generic.rejectAll'
-  |  | 
-  span.btn click=saveChanges
-    =t 'view.generic.saveAll'
-  |  | 
-span.btn click=newEntity
-  =t 'view.generic.new'
+.menu
+  .button-section
+    if isDirty
+      span.btn.warn click=rejectChanges
+        =t 'view.generic.rejectAll'
+      span.btn.info click=saveChanges
+        =t 'view.generic.saveAll'
+    span.btn click=newEntity
+      =t 'view.generic.new'
 
-div.entities#entities
+.entities#entities
   each record in controller.content
     =with record
       =render "entity" record

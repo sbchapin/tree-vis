@@ -11,11 +11,181 @@
  *= require_self
  *= require_tree .
  */
+dl{
+	margin: 0;
+}
 
 .entities{
 	position: relative;
 	.entity{
 		display: block;
 		position: absolute;
+		.endpoint-source, .endpoint-target{
+			position: absolute;
+			top:    0;
+			bottom: 0;
+			left:   0;
+			right:  0;
+			z-index: -1;
+
+			$spawner-width: 4em;
+			.spawner{
+				position: absolute;
+				left:50%;
+				margin-left: -$spawner-width/2;
+				width: $spawner-width;
+				height: $spawner-width;
+				top: -$spawner-width/2;
+				border-radius: $spawner-width/2;
+				background-color: gray;
+			}
+		}
+		.entity-wrap{
+			background-color: rgba(255, 255, 255, 0.8);
+			border: 1px solid gray;
+			border-radius: 3px;
+			padding: 5px;
+		}
+	}
+
+	._jsPlumb_connector, ._jsPlumb_endpoint{
+		z-index: -1;
+
+	}
+}
+
+
+
+//prettified styling
+$color-default: gray;
+$color-info: #009999;
+$color-warn: #FFAA00;
+$color-danger: #FF0000;
+
+body{
+	font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+}
+
+.pull-left{
+	float: left;
+}
+.pull-right{
+	float: right;
+}
+.clearfix{
+	content: "";
+	display: table;
+	clear: both;
+}
+
+
+//Menu
+.menu{
+	position: fixed;
+	overflow-x: hidden;
+	top:0px;
+	bottom: 0px;
+	left: 0px;
+	width: 150px;
+	background-color: darken($color-default, 20%);
+  .button-section{
+  	margin: 5px;
+  	span.btn{
+  		margin: auto;
+  		margin-bottom: 5px;
+  		display: block;
+  	}
+  }
+
+}
+
+
+//Inputs
+input[type=text], input[type=email], textarea {
+	background: #fff;
+	border: 2px solid lighten($color-default, 40%);
+	font-size: 1.2em;
+	padding: .5em 1em .5em;
+	margin: 0;
+	margin-bottom: 2px;
+	outline: none;
+	width: 100%;
+	display: block;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-webkit-appearance: none;
+	&:focus{
+		border: 2px solid lighten($color-info, 60%);
+	}
+	&.warn{
+		border: 2px solid lighten($color-warn, 40%);
+		&:focus{
+			border: 2px solid lighten($color-warn, 30%);
+		}
+	}
+	&.danger{
+		border: 2px solid lighten($color-danger, 40%);
+		&:focus{
+			border: 2px solid lighten($color-danger, 30%);
+		}
+	}
+}
+textarea{
+	font-size: 1em;
+}
+
+//Btns
+button{
+	margin:0;
+}
+.btn {
+	display: inline-block;
+	margin-bottom: 0;
+	font-weight: 400;
+	text-align: center;
+	vertical-align: middle;
+	cursor: pointer;
+	border: 1px solid;
+	white-space: nowrap;
+	padding: 6px 12px;
+	font-size: 14px;
+	line-height: 14px;
+	border-radius: 4px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+
+	border-color: lighten($color-default, 24%);
+	background-color: lighten($color-default, 20%);
+	color: white;
+
+	&:active{
+		-webkit-box-shadow: inset 0px 2px 5px 0px rgba(0,0,0,0.15);
+		-moz-box-shadow: inset 0px 2px 5px 0px rgba(0,0,0,0.15);
+		box-shadow: inset 0px 2px 5px 0px rgba(0,0,0,0.15);
+	}
+
+	&.info{
+		border-color: lighten($color-info, 0%);
+		background-color: lighten($color-info, 5%);
+		&:active{
+			background-color: lighten($color-info, 3%);
+		}
+	}
+	&.warn{
+		border-color: lighten($color-warn, 0%);
+		background-color: lighten($color-warn, 10%);
+		&:active{
+			background-color: lighten($color-warn, 0%);
+		}
+	}
+	&.danger{
+		border-color: lighten($color-danger, 0%);
+		background-color: lighten($color-danger, 10%);
+		&:active{
+			background-color: darken($color-danger, 5%);
+		}
 	}
 }

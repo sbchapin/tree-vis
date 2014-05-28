@@ -27,12 +27,17 @@ App.EntityView = Ember.View.extend
       # suspend drawing and initialise.
       instance.doWhileSuspended =>
         $this = $("##{@get('windowId')}")
+
+        #make it draggable
         instance.draggable $this
 
         for endpoint in $this.find('.endpoint-source')
-          instance.makeSource(endpoint, { parent: endpoint.parentNode, anchor: "Continuous" })
+          instance.makeSource(endpoint, {anchor: "Continuous" })
 
-        instance.makeTarget($this, { anchor: "Continuous" })
+        for endpoint in $this.find('.endpoint-target')
+          instance.makeTarget(endpoint, {anchor: "Continuous" })
+
+        # instance.makeTarget($this, { anchor: "Continuous" })
 
         # instance.connect({ source: 'entity1', target: 'entity2' })
 
