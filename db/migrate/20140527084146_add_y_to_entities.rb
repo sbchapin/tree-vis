@@ -1,5 +1,5 @@
 class AddYToEntities < ActiveRecord::Migration
   def change
-    add_column :entities, :y, :double
+    add_column :entities, :y, :integer
   end
 end

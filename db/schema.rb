@@ -18,8 +18,8 @@ ActiveRecord::Schema.define(version: 20140527084146) do
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.float    "x"
-    t.float    "y"
+    t.integer  "x"
+    t.integer  "y"
   end
 
 end
