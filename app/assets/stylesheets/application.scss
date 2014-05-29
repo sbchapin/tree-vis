@@ -11,61 +11,32 @@
  *= require_self
  *= require_tree .
  */
-dl{
-	margin: 0;
-}
-
-.entities{
-	position: relative;
-	.entity{
-		display: block;
-		position: absolute;
-		.endpoint-source, .endpoint-target{
-			position: absolute;
-			top:    0;
-			bottom: 0;
-			left:   0;
-			right:  0;
-			z-index: -1;
-
-			$spawner-width: 4em;
-			.spawner{
-				position: absolute;
-				left:50%;
-				margin-left: -$spawner-width/2;
-				width: $spawner-width;
-				height: $spawner-width;
-				top: -$spawner-width/2;
-				border-radius: $spawner-width/2;
-				background-color: gray;
-			}
-		}
-		.entity-wrap{
-			background-color: rgba(255, 255, 255, 0.8);
-			border: 1px solid gray;
-			border-radius: 3px;
-			padding: 5px;
-		}
-	}
-
-	._jsPlumb_connector, ._jsPlumb_endpoint{
-		z-index: -1;
-
-	}
-}
 
 
 
-//prettified styling
+
+//GENERICS
+@import 'icons';
 $color-default: gray;
+$color-default-invert: lighten($color-default, 30%);
 $color-info: #009999;
 $color-warn: #FFAA00;
 $color-danger: #FF0000;
 
+@mixin transition($transition-property, $transition-time, $method) {
+	-webkit-transition: $transition-property $transition-time $method;
+	-moz-transition: $transition-property $transition-time $method;
+	-ms-transition: $transition-property $transition-time $method;
+	-o-transition: $transition-property $transition-time $method;
+	transition: $transition-property $transition-time $method;
+}
+
 body{
 	font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
 }
-
+dl{
+	margin: 0;
+}
 .pull-left{
 	float: left;
 }
@@ -79,27 +50,120 @@ body{
 }
 
 
+//////////////
+//Entity boxes
+$entity-min-width: 200px;
+.entities{
+	position: relative;
+	.entity{
+		display: block;
+		position: absolute;
+		min-width: $entity-min-width;
+		.endpoint-source, .endpoint-target{
+			position: absolute;
+			top:    0;
+			bottom: 0;
+			left:   0;
+			right:  0;
+			z-index: -1;
+		}
+		.entity-wrap{
+			background-color: rgba(255, 255, 255, 0.8);
+			border: 1px solid $color-default;
+			border-radius: 3px;
+			padding: 5px;
+			cursor: move;
+		}
+
+		$spawner-width: 4em;
+		.spawner, .grabbable{
+			position: absolute;
+			left:50%;
+			margin-left: -$spawner-width/2;
+			width: $spawner-width;
+			height: $spawner-width;
+			border-radius: $spawner-width/2;
+			background-color: $color-default;
+			color: $color-default-invert;
+			text-align: center;
+			[class^="icon"], [class*=" icon-"] {
+				font-size: $spawner-width * 0.70;
+				line-height: $spawner-width/2 * 0.70 ;
+			}
+			z-index: -1;
+		}
+		.grabbable{ 
+			top: -$spawner-width/2; 
+			@include transition(color, 0.05s, ease-in-out);
+			&:hover{
+				z-index: auto;
+				color: lighten($color-default-invert, 10%);
+			}
+		}
+		.spawner  { 
+			background: -moz-linear-gradient(top, rgba(0,0,0,0) 0%, $color-default 50%, $color-default 100%); /* FF3.6+ */
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(50%,$color-default), color-stop(100%,$color-default)); /* Chrome,Safari4+ */
+			background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%,$color-default 50%,$color-default 100%); /* Chrome10+,Safari5.1+ */
+			background: -o-linear-gradient(top, rgba(0,0,0,0) 0%,$color-default 50%,$color-default 100%); /* Opera 11.10+ */
+			background: -ms-linear-gradient(top, rgba(0,0,0,0) 0%,$color-default 50%,$color-default 100%); /* IE10+ */
+			background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,$color-default 50%,$color-default 100%); /* W3C */
+			
+			cursor: crosshair;
+			bottom: -$spawner-width/2; 
+			&:hover{
+				background: $color-default;
+			}
+		}
+	}
+
+	._jsPlumb_connector, ._jsPlumb_endpoint{
+		z-index: -2;
+	}
+}
+
+
+//////
 //Menu
+$menu-icon-size: 3.5em;
 .menu{
 	position: fixed;
+	z-index:100;
 	overflow-x: hidden;
 	top:0px;
 	bottom: 0px;
 	left: 0px;
-	width: 150px;
-	background-color: darken($color-default, 20%);
-  .button-section{
-  	margin: 5px;
-  	span.btn{
-  		margin: auto;
-  		margin-bottom: 5px;
-  		display: block;
-  	}
-  }
+	background-color: darken(rgba($color-default, 0.95), 20%);
+	.button-section{
+		margin: 5px;
+		.btn{
+			font-size: $menu-icon-size;
+			line-height: $menu-icon-size;
+			padding: $menu-icon-size/16;
+			margin: $menu-icon-size/16;
+			display: block;
+		}
+	}
 
 }
 
+//////////////
+//Notification
+#notification{
+	position: absolute;
+	z-index: -100;
+	top: 0;
+	right: 0;
+	left: $menu-icon-size * 33 / 16;
+	margin: 15px;
+	padding: 15px;
+	color: darken($color-warn, 20%);
+	background-color: lighten($color-warn, 45%);
+	border: 1px solid lighten($color-warn, 40%);
+	border-radius: 2px;
+	text-align: center;
+}
 
+////////
 //Inputs
 input[type=text], input[type=email], textarea {
 	background: #fff;
@@ -116,6 +180,8 @@ input[type=text], input[type=email], textarea {
 	-moz-box-sizing: border-box;
 	-ms-box-sizing: border-box;
 	-webkit-appearance: none;
+	@include transition(border, 0.3s, ease-in-out);
+
 	&:focus{
 		border: 2px solid lighten($color-info, 60%);
 	}
@@ -136,6 +202,7 @@ textarea{
 	font-size: 1em;
 }
 
+//////
 //Btns
 button{
 	margin:0;
@@ -160,16 +227,25 @@ button{
 	border-color: lighten($color-default, 24%);
 	background-color: lighten($color-default, 20%);
 	color: white;
+	@include transition(background-color, 0.1s, ease-in-out);
 
+	&:hover{
+		background-color: lighten($color-default, 30%);
+	}
 	&:active{
+		@include transition(background-color, 0.05s, linear);
 		-webkit-box-shadow: inset 0px 2px 5px 0px rgba(0,0,0,0.15);
 		-moz-box-shadow: inset 0px 2px 5px 0px rgba(0,0,0,0.15);
 		box-shadow: inset 0px 2px 5px 0px rgba(0,0,0,0.15);
+		> * {margin-top:1px;margin-bottom:-1px;}
 	}
 
 	&.info{
 		border-color: lighten($color-info, 0%);
 		background-color: lighten($color-info, 5%);
+		&:hover{
+			background-color: lighten($color-info, 10%);
+		}
 		&:active{
 			background-color: lighten($color-info, 3%);
 		}
@@ -177,13 +253,22 @@ button{
 	&.warn{
 		border-color: lighten($color-warn, 0%);
 		background-color: lighten($color-warn, 10%);
+		&:hover{
+			background-color: lighten($color-warn, 20%);
+		}
 		&:active{
 			background-color: lighten($color-warn, 0%);
+			-webkit-box-shadow: inset 0px 2px 5px 0px rgba(0,0,0,0.30);
+			-moz-box-shadow: inset 0px 2px 5px 0px rgba(0,0,0,0.30);
+			box-shadow: inset 0px 2px 5px 0px rgba(0,0,0,0.30);
 		}
 	}
 	&.danger{
 		border-color: lighten($color-danger, 0%);
 		background-color: lighten($color-danger, 10%);
+		&:hover{
+			background-color: lighten($color-danger, 15%);
+		}
 		&:active{
 			background-color: darken($color-danger, 5%);
 		}

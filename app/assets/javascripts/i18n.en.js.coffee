@@ -2,6 +2,10 @@
 # https://github.com/jamesarosen/ember-i18n
 
 Em.I18n.translations =
+	controller:
+		entity:
+			deleteForSure: 'Are you sure you want to delete this?'
+
 	view:
 		generic:
 			clear: 'Clear'
@@ -9,15 +13,15 @@ Em.I18n.translations =
 			download: 'Download'
 			edit: 'Edit'
 			new: 'New'
-			reject: 'Reject'
-			rejectAll: 'Reject All'
-			save: 'Save'
-			saveAll: 'Save All'
+			reject: 'Reject changes'
+			rejectAll: 'Reject all changes'
+			save: 'Save changes'
+			saveAll: 'Save all changes'
 			search: 'Search'
 			show: 'Show'
 		entities:
 			header: 'Entities'
-
+			notification: 'NOTE: Server-side relationships not implemented.'
 	model:
 		meta:
 			isDirty: 'Is Dirty?'

@@ -1,34 +1,33 @@
 .entity id=view.windowId style=view.positioningStyle
+  
+  //- Endpoints
   .endpoint.endpoint-target id=view.endpointTargetId
   .endpoint.endpoint-source id=view.endpointSourceId
     .spawner
+      .icon-flow-parallel
+  
   .entity-wrap
+    //- Grab to move
+    .grabbable
+        .icon-move
+    //- Real contents
     form submit=saveChanges
+
+      //- Form inputs
       =input type="text" valueBinding="name" placeholderTranslation="model.attributes.entities.name" class='input entity-name'
       =textarea type="text" valueBinding="description" placeholderTranslation="model.attributes.entities.description"  class='input entity-description'
-     
-      //- dl
-      //-   dt=t model.attributes.entities.id
-      //-   dd=id
-        
-      //-   dt=t model.meta.isDirty
-      //-   dd=isDirty
-      //-   p
-      //-     | x:
-      //-     =x
-      //-     | , y:
-      //-     =y
-     
 
-      unless isNew
-        .pull-left
-          span.btn.danger.entity-delete click=deleteEntity
-            =t 'view.generic.delete'
+      //- Bottom goods
+      .pull-left
+        unless isNew
+          span.btn.danger.entity-delete title=view.deleteTitle click=deleteEntity
+            .icon-x
+        if isDirty
+          span.btn.warn.entity-warn title=view.rejectTitle click=rejectChanges 
+            .icon-undo
       if isDirty
         .pull-right
-          span.btn.warn.entity-warn click=rejectChanges
-            =t 'view.generic.reject'
-          button.btn.info.entity-save
-            =t 'view.generic.save'
+          button.btn.info.entity-save title=view.saveTitle
+            .icon-checkmark
       .clearfix
 

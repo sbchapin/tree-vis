@@ -1,13 +1,19 @@
+//- Sidebar menu goodies
 .menu
   .button-section
+    span.btn title=view.newTitle click=newEntity
+      .icon-plus
     if isDirty
-      span.btn.warn click=rejectChanges
-        =t 'view.generic.rejectAll'
-      span.btn.info click=saveChanges
-        =t 'view.generic.saveAll'
-    span.btn click=newEntity
-      =t 'view.generic.new'
+      span.btn.info title=view.saveTitle click=saveChanges
+        .icon-checkmark
+      span.btn.warn title=view.rejectTitle click=rejectChanges
+        .icon-undo
 
+//- Notifications for pushing to production
+#notification
+  =t 'view.entities.notification'
+
+//- Actual entities render here
 .entities#entities
   each record in controller.content
     =with record

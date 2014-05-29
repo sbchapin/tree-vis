@@ -1,4 +1,5 @@
-App.EntityController = Ember.ObjectController.extend
+App.EntityController = Ember.ObjectController.extend Em.I18n.TranslateableProperties,
+  deleteForSureTranslation: 'controller.entity.deleteForSure'
   actions:
     saveChanges: () ->
       model = @get('model')
@@ -9,5 +10,6 @@ App.EntityController = Ember.ObjectController.extend
       model.rollback()
 
     deleteEntity: () ->
-      model = @get('model')
-      model.destroyRecord()    	
+      if confirm(@get('deleteForSure'))
+        model = @get('model')
+        model.destroyRecord()    	

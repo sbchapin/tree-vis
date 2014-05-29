@@ -1,7 +1,15 @@
 # for more details see: http://emberjs.com/guides/views/
 
-App.EntityView = Ember.View.extend
+App.EntityView = Ember.View.extend Em.I18n.TranslateableProperties,
+  # linked template
   templateName: 'entity'
+
+  # translations
+  deleteTitleTranslation:'view.generic.delete'
+  rejectTitleTranslation:'view.generic.reject'
+  saveTitleTranslation:'view.generic.save'
+
+  # view-relevant computed attributes
   positioningStyle: ( () -> 
     x = @get('controller.x')
     y = @get('controller.y')
@@ -19,6 +27,8 @@ App.EntityView = Ember.View.extend
   	@set('controller.x', pos.left)
   	@set('controller.y', pos.top)
 
+
+
   didInsertElement: -> 
     jsPlumb.ready =>
       #get instance from parent view
@@ -27,6 +37,7 @@ App.EntityView = Ember.View.extend
       # suspend drawing and initialise.
       instance.doWhileSuspended =>
         $this = $("##{@get('windowId')}")
+
 
         #make it draggable
         instance.draggable $this

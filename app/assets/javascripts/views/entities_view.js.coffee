@@ -1,8 +1,17 @@
 # for more details see: http://emberjs.com/guides/views/
 
-App.EntitiesView = Ember.View.extend
+App.EntitiesView = Ember.View.extend Em.I18n.TranslateableProperties,
+  # linked template
   templateName: 'entities'
-  instance: null #jsPlumb instance
+  # jsPlumb instance
+  instance: null
+
+  # translations
+  newTitleTranslation:'view.generic.new'
+  saveTitleTranslation:'view.generic.saveAll'
+  rejectTitleTranslation:'view.generic.rejectAll'
+
+
 
   didInsertElement: -> 
     jsPlumb.ready =>
