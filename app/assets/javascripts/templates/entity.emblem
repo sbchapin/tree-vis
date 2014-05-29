@@ -1,8 +1,8 @@
-.entity id=view.windowId style=view.positioningStyle
+.entity style=view.positioningStyle
   
   //- Endpoints
-  .endpoint.endpoint-target id=view.endpointTargetId
-  .endpoint.endpoint-source id=view.endpointSourceId
+  .endpoint.endpoint-target
+  .endpoint.endpoint-source
     .spawner
       .icon-flow-parallel
   

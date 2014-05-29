@@ -12,12 +12,14 @@ App.EntitiesController = Ember.ArrayController.extend
 
   actions:
     saveChanges: () ->
-      model = @get('model')
-      model.save()
+      for model in @get('model.content') when model.get('isDirty')
+        model.save()
 
     rejectChanges: () ->
-      for model in @get('model.content')
+      for model in @get('model.content') when model.get('isDirty')
         model.rollback()
 
     newEntity: () ->
       post = @store.createRecord('entity')
+      post.set('x', 400)
+      post.set('y', 400)

@@ -1,5 +1,4 @@
 # for more details see: http://emberjs.com/guides/views/
-
 App.EntityView = Ember.View.extend Em.I18n.TranslateableProperties,
   # linked template
   templateName: 'entity'
@@ -17,9 +16,6 @@ App.EntityView = Ember.View.extend Em.I18n.TranslateableProperties,
       return "left: #{x}px; top: #{y}px;"
     return undefined
   ).property('controller.x controller.y')
-  windowId: ( () -> 'entity' + @get('controller.id') ).property('controller.id')
-  endpointTargetId: ( () -> 'endpoint-target' + @get('controller.id') ).property('controller.id')
-  endpointSourceId: ( () -> 'endpoint-source' + @get('controller.id') ).property('controller.id')
 
   #update x and y when dragged
   drag: (event, ui) -> 
@@ -30,25 +26,20 @@ App.EntityView = Ember.View.extend Em.I18n.TranslateableProperties,
 
 
   didInsertElement: -> 
+    $this = @$('.entity')
     jsPlumb.ready =>
       #get instance from parent view
       instance = @get('parentView.instance')
 
       # suspend drawing and initialise.
       instance.doWhileSuspended =>
-        $this = $("##{@get('windowId')}")
-
-
+        console.log $this
         #make it draggable
         instance.draggable $this
-
         for endpoint in $this.find('.endpoint-source')
           instance.makeSource(endpoint, {anchor: "Continuous" })
 
         for endpoint in $this.find('.endpoint-target')
           instance.makeTarget(endpoint, {anchor: "Continuous" })
 
-        # instance.makeTarget($this, { anchor: "Continuous" })
-
-        # instance.connect({ source: 'entity1', target: 'entity2' })
 
