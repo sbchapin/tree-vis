@@ -1,5 +1,6 @@
 App.EntityController = Ember.ObjectController.extend Em.I18n.TranslateableProperties,
   deleteForSureTranslation: 'controller.entity.deleteForSure'
+  
   actions:
     saveChanges: () ->
       model = @get('model')

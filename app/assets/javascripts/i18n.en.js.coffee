@@ -21,7 +21,7 @@ Em.I18n.translations =
 			show: 'Show'
 		entities:
 			header: 'Entities'
-			notification: 'NOTE: Server-side relationships not implemented.'
+			notification: 'NOTE: Server-side relationships not implemented.  Only mobile support is through touch-punch.'
 	model:
 		meta:
 			isDirty: 'Is Dirty?'
