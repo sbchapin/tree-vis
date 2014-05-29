@@ -40,12 +40,9 @@ test:
 #   username: treeviz
 #   password:  TreeVizIsTotallyCool
 
-# production:
-#   host: 
-#   adapter: mysql2
-#   encoding: utf8
-#   reconnect: false
-#   database: treeviz
-#   pool: 5
-#   username: treeviz
-#   password:  TreeVizIsTotallyCool
+production:
+  adapter: postgresql
+  encoding: utf8
+  database: treeviz
+  pool: 5
+  password:  TreeVizIsTotallyCool

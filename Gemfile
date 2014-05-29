@@ -29,6 +29,7 @@ gem 'therubyracer'
 gem 'haml'
 gem 'haml-rails', :group => :development #for haml scaffolds
 
+
 #Ember
 gem 'ember-rails'
 gem 'emblem-rails'
@@ -58,3 +59,12 @@ end
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
+
+#heroku production deployment
+group :production do
+  gem 'rails_12factor'
+  # postgres
+  gem 'pg'
+end
+
+ruby "2.1.2"
