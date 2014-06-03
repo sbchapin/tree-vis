@@ -1,4 +1,5 @@
 TreeVis::Application.routes.draw do
+  resources :relationships
   resources :entities
   root 'home#index'
 

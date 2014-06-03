@@ -8,12 +8,11 @@ App.Router.map ->
 #   #   error: (e) -> 
 #   #     true # let other error handlers catch it
 
-
-#DOCS
-App.EntitiesRoute = Ember.Route.extend
-  # setupController: (controller) -> controller
-  model: (params) -> @store.find('entity')
-
 App.IndexRoute = Ember.Route.extend
   beforeModel: ->
     @transitionTo('entities')
+
+
+#DOCS
+App.EntitiesRoute = Ember.Route.extend
+  model: (params) -> @store.find('entity')

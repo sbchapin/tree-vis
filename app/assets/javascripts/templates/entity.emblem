@@ -1,8 +1,8 @@
 .entity style=view.positioningStyle
   
   //- Endpoints
-  .endpoint.endpoint-target
-  .endpoint.endpoint-source
+  view App.RelationshipTargetView relationships=relationships
+  view App.RelationshipSourceView relationships=relationships
     .spawner
       .icon-flow-parallel
   

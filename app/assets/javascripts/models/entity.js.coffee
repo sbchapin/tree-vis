@@ -5,3 +5,4 @@ App.Entity = DS.Model.extend
   description: DS.attr 'string'
   x: DS.attr 'number'
   y: DS.attr 'number'
+  relationships: DS.hasMany 'relationship'

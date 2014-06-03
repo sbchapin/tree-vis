@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140527084146) do
+ActiveRecord::Schema.define(version: 20140530083343) do
 
   create_table "entities", force: true do |t|
     t.string   "name"
@@ -21,5 +21,15 @@ ActiveRecord::Schema.define(version: 20140527084146) do
     t.integer  "x"
     t.integer  "y"
   end
+
+  create_table "relationships", force: true do |t|
+    t.integer  "entity_source_id"
+    t.integer  "entity_target_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "relationships", ["entity_source_id"], name: "index_relationships_on_entity_source_id", using: :btree
+  add_index "relationships", ["entity_target_id"], name: "index_relationships_on_entity_target_id", using: :btree
 
 end

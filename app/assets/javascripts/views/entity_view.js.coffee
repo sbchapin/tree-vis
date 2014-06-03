@@ -30,11 +30,23 @@ App.EntityView = Ember.View.extend Em.I18n.TranslateableProperties,
       if entity
         entity.css({left: @get('controller.x'), top: @get('controller.y')})
         instance = @get('parentView.instance')
+        console.log instance
         if instance
           instance.repaint(entity)
   ).observes('controller.x').observes('controller.y')
 
+  observeRelationships: ( () ->
+    jsPlumb.ready =>
+      for relationship in @get('controller.relationships.content')
+        Ember.run.later(
+          () =>
+            instance = @get('parentView.instance')
+            # if instance
+            #   instance.connect({ source: @$('.entity .endpoint-source'),  target: @$('.entity .endpoint-target') })
+          1000
+        )
 
+  ).observes('controller.relationships').observes('controller.relationships.content').observes('controller.relationships.content.length').observes('controller.relationships.content.@each')
 
   didInsertElement: -> 
     $this = @$('.entity')
@@ -52,6 +64,11 @@ App.EntityView = Ember.View.extend Em.I18n.TranslateableProperties,
         for endpoint in $this.find('.endpoint-target')
           instance.makeTarget(endpoint, {anchor: "Continuous" })
 
+        # for relationship in @get('controller.relationships')
+        #   console.log "pe peee"
+        #   instance.connect
+        #     source: $this.find('.endpoint-source')
+        #     target: $this.find('.endpoint-target')
 
   willDestroyElement: ->
     source = @$('.entity .endpoint-source')
