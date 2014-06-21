@@ -11,8 +11,6 @@ App.EntitiesView = Ember.View.extend Em.I18n.TranslateableProperties,
   saveTitleTranslation:'view.generic.saveAll'
   rejectTitleTranslation:'view.generic.rejectAll'
 
-
-
   didInsertElement: -> 
     jsPlumb.ready =>
       color = "gray"

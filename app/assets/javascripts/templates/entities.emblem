@@ -1,7 +1,7 @@
 //- Sidebar menu goodies
 .menu
   .button-section
-    span.btn title=view.newTitle click=newEntity
+    span.btn.new title=view.newTitle click=newEntity
       .icon-plus
     if isDirty
       span.btn.info title=view.saveTitle click=saveChanges

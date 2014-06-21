@@ -22,6 +22,7 @@ $color-default-invert: lighten($color-default, 30%);
 $color-info: #009999;
 $color-warn: #FFAA00;
 $color-danger: #FF0000;
+$color-new: #00B25C;
 
 @mixin transition($transition-property, $transition-time, $method) {
 	-webkit-transition: $transition-property $transition-time $method;
@@ -29,6 +30,19 @@ $color-danger: #FF0000;
 	-ms-transition: $transition-property $transition-time $method;
 	-o-transition: $transition-property $transition-time $method;
 	transition: $transition-property $transition-time $method;
+}
+@mixin box-shadow($shadow-vert, $shadow-horiz, $shadow-blur, $shadow-spread, $color) {
+	-webkit-box-shadow: $shadow-vert $shadow-horiz $shadow-blur $shadow-spread $color;
+	-moz-box-shadow: $shadow-vert $shadow-horiz $shadow-blur $shadow-spread $color;
+	box-shadow: $shadow-vert $shadow-horiz $shadow-blur $shadow-spread $color;
+}
+@mixin background-gradient-0-50-100-vertical($top-color, $middle-color, $bottom-color){
+	background: -moz-linear-gradient(top, $top-color 0%, $middle-color 50%, $bottom-color 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$top-color), color-stop(50%,$middle-color), color-stop(100%,$bottom-color)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, $top-color 0%,$middle-color 50%,$bottom-color 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, $top-color 0%,$middle-color 50%,$bottom-color 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, $top-color 0%,$middle-color 50%,$bottom-color 100%); /* IE10+ */
+	background: linear-gradient(to bottom, $top-color 0%,$middle-color 50%,$bottom-color 100%); /* W3C */
 }
 
 body{
@@ -53,11 +67,17 @@ dl{
 //////////////
 //Entity boxes
 $entity-min-width: 200px;
+$entity-radius : 3px;
 .entities{
 	position: relative;
 	.entity{
+		@include transition(-webkit-box-shadow, 0.25s, ease-in-out);
+		@include transition(-moz-box-shadow, 0.25s, ease-in-out);
+		@include transition(box-shadow, 0.25s, ease-in-out);
+		@include transition(opacity, 0.25s, ease-in-out);
 		display: block;
 		position: absolute;
+		border-radius: $entity-radius;
 		min-width: $entity-min-width;
 		.endpoint-source, .endpoint-target{
 			position: absolute;
@@ -70,7 +90,7 @@ $entity-min-width: 200px;
 		.entity-wrap{
 			background-color: rgba(255, 255, 255, 0.8);
 			border: 1px solid $color-default;
-			border-radius: 3px;
+			border-radius: $entity-radius;
 			padding: 5px;
 			cursor: move;
 		}
@@ -106,19 +126,51 @@ $entity-min-width: 200px;
 			color: lighten($color-default-invert, 10%);
 		}
 		.spawner  { 
-			background: -moz-linear-gradient(top, rgba(0,0,0,0) 0%, $color-default 50%, $color-default 100%); /* FF3.6+ */
-			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(50%,$color-default), color-stop(100%,$color-default)); /* Chrome,Safari4+ */
-			background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%,$color-default 50%,$color-default 100%); /* Chrome10+,Safari5.1+ */
-			background: -o-linear-gradient(top, rgba(0,0,0,0) 0%,$color-default 50%,$color-default 100%); /* Opera 11.10+ */
-			background: -ms-linear-gradient(top, rgba(0,0,0,0) 0%,$color-default 50%,$color-default 100%); /* IE10+ */
-			background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,$color-default 50%,$color-default 100%); /* W3C */
+			background: $color-default;
+			@include background-gradient-0-50-100-vertical(rgba(255,255,255,0), $color-default, $color-default);
 			cursor: crosshair;
 			bottom: -$spawner-width/2; 
 			&:hover{
 				z-index: auto;
-				background: $color-default;
+				background: $color-new;
+				@include background-gradient-0-50-100-vertical(rgba(255,255,255,0), $color-new, $color-new);
 			}
 		}
+	}
+
+	.dirty > .entity{
+		// border:solid 2px lighten($color-warn, 30%);
+		@include box-shadow(0px,0px,5px,0px,lighten($color-warn, 20%));
+	}
+
+	// .new > .entity{
+	// 	// border:solid 2px lighten($color-new, 15%);
+	// 	@include box-shadow(0px,0px,5px,0px,lighten($color-new, 0%));
+	// }
+
+	.saving > .entity{
+		// border:solid 2px lighten($color-info, 30%);
+		@include box-shadow(0px,0px,5px,0px,lighten($color-info, 30%));
+		opacity: 0.7;
+		pointer-events: none;
+		cursor: not-allowed;
+		// &:after{
+		// 	content: "";
+		// 	display: block;
+		// 	position: absolute;
+		// 	top:0;
+		// 	bottom:0;
+		// 	left:0;
+		// 	right:0;
+		// 	@include transition(background-color, 0.5s, ease-in-out);
+		// 	background-color: rgba(255,255,255,0.7);
+		// 	border-radius: $entity-radius;
+		// 	cursor: move;
+		// }
+	}
+
+	.error > .entity{
+		@include box-shadow(0px,0px,5px,0px,lighten($color-danger, 0%));
 	}
 
 	._jsPlumb_connector, ._jsPlumb_endpoint{
@@ -245,7 +297,16 @@ button{
 		background-color: lighten($color-default, 15%);
 		> * {margin-top:1px;margin-bottom:-1px;}
 	}
-
+	&.new{
+		border-color: lighten($color-new, 0%);
+		background-color: lighten($color-new, 5%);
+		&:hover{
+			background-color: lighten($color-new, 10%);
+		}
+		&:active{
+			background-color: lighten($color-new, 3%);
+		}
+	}
 	&.info{
 		border-color: lighten($color-info, 0%);
 		background-color: lighten($color-info, 5%);

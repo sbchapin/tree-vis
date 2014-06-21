@@ -1,11 +1,14 @@
-.entity style=view.positioningStyle
+.entity style=view.positioningStyle class=view.classes
   
   //- Endpoints
-  view App.RelationshipTargetView relationships=relationships
-  view App.RelationshipSourceView relationships=relationships
-    .spawner
-      .icon-flow-parallel
-  
+  //- view App.RelationshipTargetView relationships=relationships
+  //- view App.RelationshipSourceView relationships=relationships
+  unless isNew
+    render 'relationship_targets' relationships.content
+    render 'relationship_sources' relationships.content
+      .spawner
+        .icon-flow-parallel
+    
   .entity-wrap
     //- Grab to move
     .grabbable

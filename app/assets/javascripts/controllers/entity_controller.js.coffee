@@ -13,4 +13,4 @@ App.EntityController = Ember.ObjectController.extend Em.I18n.TranslateableProper
     deleteEntity: () ->
       if confirm(@get('deleteForSure'))
         model = @get('model')
-        model.destroyRecord()    	
+        model.destroyRecord()

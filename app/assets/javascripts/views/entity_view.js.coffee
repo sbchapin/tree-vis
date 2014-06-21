@@ -2,6 +2,8 @@
 App.EntityView = Ember.View.extend Em.I18n.TranslateableProperties,
   # linked template
   templateName: 'entity'
+  # jsPlumb instance (grabbed on didInsertElement from parent)
+  instance: null
 
   # translations
   deleteTitleTranslation:'view.generic.delete'
@@ -15,7 +17,31 @@ App.EntityView = Ember.View.extend Em.I18n.TranslateableProperties,
     if x? && y?
       return "left: #{x}px; top: #{y}px;"
     return undefined
-  ).property('controller.x controller.y')
+  ).property('controller.x', 'controller.y')
+
+  classNameBindings: 'htmlClass'
+  htmlClass: ( () -> 
+    classes = []
+
+    # entity-#
+    id = @get('controller.id')  
+    id = 'new' if !id
+    classes.push "entity-#{id}"
+
+    # dirty
+    classes.push "dirty" if @get('controller.isDirty')
+
+    # saving
+    classes.push "saving" if @get('controller.isSaving')
+
+    # error
+    classes.push "error" if @get('controller.isError')
+
+    # new
+    classes.push "new" if @get('controller.isNew')
+
+    return classes.join(' ')
+  ).property('controller.id', 'controller.isDirty', 'controller.isSaving', 'controller.isError')
 
   #update x and y when dragged
   drag: (event, ui) -> 
@@ -30,53 +56,17 @@ App.EntityView = Ember.View.extend Em.I18n.TranslateableProperties,
       if entity
         entity.css({left: @get('controller.x'), top: @get('controller.y')})
         instance = @get('parentView.instance')
-        console.log instance
         if instance
           instance.repaint(entity)
   ).observes('controller.x').observes('controller.y')
 
-  observeRelationships: ( () ->
-    jsPlumb.ready =>
-      for relationship in @get('controller.relationships.content')
-        Ember.run.later(
-          () =>
-            instance = @get('parentView.instance')
-            # if instance
-            #   instance.connect({ source: @$('.entity .endpoint-source'),  target: @$('.entity .endpoint-target') })
-          1000
-        )
-
-  ).observes('controller.relationships').observes('controller.relationships.content').observes('controller.relationships.content.length').observes('controller.relationships.content.@each')
 
   didInsertElement: -> 
-    $this = @$('.entity')
     jsPlumb.ready =>
       #get instance from parent view
       instance = @get('parentView.instance')
-
+      @set('instance', instance)
       # suspend drawing and initialise.
       instance.doWhileSuspended =>
         #make it draggable
-        instance.draggable $this
-        for endpoint in $this.find('.endpoint-source')
-          instance.makeSource(endpoint, {anchor: "Continuous" })
-
-        for endpoint in $this.find('.endpoint-target')
-          instance.makeTarget(endpoint, {anchor: "Continuous" })
-
-        # for relationship in @get('controller.relationships')
-        #   console.log "pe peee"
-        #   instance.connect
-        #     source: $this.find('.endpoint-source')
-        #     target: $this.find('.endpoint-target')
-
-  willDestroyElement: ->
-    source = @$('.entity .endpoint-source')
-    target = @$('.entity .endpoint-target')
-    instance = @get('parentView.instance')
-    if source && instance
-      instance.detachAllConnections(source)
-      instance.repaint(source)
-    if target && instance
-      instance.detachAllConnections(target)
-      instance.repaint(target)
+        instance.draggable @$('.entity')
