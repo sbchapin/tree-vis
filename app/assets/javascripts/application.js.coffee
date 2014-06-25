@@ -1,8 +1,9 @@
 #= require jquery
+#= require jquery.ui.resizable
 #= require jquery.ui.draggable
 #= require jquery.ui.droppable
 #= require touch-punch-min
-#= require jquery-jsplumb-1.6.2-min
+#= require d3-min
 #= require handlebars
 #= require ember
 #= require ember-data

@@ -1,0 +1,4 @@
+.relationships#relationships
+  each record in controller.content
+    =with record
+      =render "relationship" record

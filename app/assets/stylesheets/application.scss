@@ -47,6 +47,7 @@ $color-new: #00B25C;
 
 body{
 	font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+
 }
 dl{
 	margin: 0;
@@ -63,13 +64,11 @@ dl{
 	clear: both;
 }
 
-
 //////////////
 //Entity boxes
 $entity-min-width: 200px;
 $entity-radius : 3px;
 .entities{
-	position: relative;
 	.entity{
 		@include transition(-webkit-box-shadow, 0.25s, ease-in-out);
 		@include transition(-moz-box-shadow, 0.25s, ease-in-out);
@@ -88,6 +87,29 @@ $entity-radius : 3px;
 			z-index: -1;
 		}
 		.entity-wrap{
+			form{
+				height: 100%;
+				position: relative;
+				$entity-top-height: 45px;
+				$entity-bottom-height: 27px;
+				$entity-inner-padding: 2px;
+				.top, .middle, .bottom{
+					position:absolute;
+					width: 100%;
+				}
+				.top{
+					top:0;
+					height: $entity-top-height + $entity-inner-padding;
+				}
+				.bottom{
+					bottom:0;
+					height: $entity-bottom-height;
+				}
+				.middle{
+					top: $entity-top-height + $entity-inner-padding;
+					bottom: $entity-bottom-height + $entity-inner-padding;
+				}
+			}
 			background-color: rgba(255, 255, 255, 0.8);
 			border: 1px solid $color-default;
 			border-radius: $entity-radius;
@@ -136,6 +158,36 @@ $entity-radius : 3px;
 				@include background-gradient-0-50-100-vertical(rgba(255,255,255,0), $color-new, $color-new);
 			}
 		}
+
+		.ui-resizable-handle{
+			&.ui-resizable-n,
+			&.ui-resizable-w,
+			&.ui-resizable-e,
+			&.ui-resizable-s{
+				display: none;
+			}
+			&.ui-resizable-se{
+				position:absolute;
+				display: block;
+				height: 10px;
+				width: 10px;
+				bottom: 0px;
+				right: 0px;
+				cursor: se-resize;
+				&:after{
+					content: "";
+					display: block;
+					position: absolute;
+					width: 0;
+					height: 0;
+					border-style: solid;
+					bottom: 0px;
+					right: 0px;
+					border-width: 0 0 10px 10px;
+					border-color: transparent transparent $color-default transparent;
+				}
+			}
+		}
 	}
 
 	.dirty > .entity{
@@ -172,12 +224,19 @@ $entity-radius : 3px;
 	.error > .entity{
 		@include box-shadow(0px,0px,5px,0px,lighten($color-danger, 0%));
 	}
-
-	._jsPlumb_connector, ._jsPlumb_endpoint{
-		z-index: -2;
-	}
 }
 
+
+
+////////////////////
+//Relationship boxes
+.relationships{
+	.relationship{
+		display: block;
+		position: absolute;
+		background-color: #f00;
+	}
+}
 
 //////
 //Menu
@@ -257,6 +316,8 @@ input[type=text], input[type=email], textarea {
 }
 textarea{
 	font-size: 1em;
+	resize: none;
+	height:100%;
 }
 
 //////

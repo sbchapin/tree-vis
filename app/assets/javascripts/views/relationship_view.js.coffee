@@ -1,77 +1,41 @@
 # for more details see: http://emberjs.com/guides/views/
-
-App.RelationshipSourcesView = Ember.View.extend
-  tagName: 'div'
-  classNames: 'endpoint endpoint-source'
-
-  updateRelationships: (relationships) ->
-    containingEntity = @get('parentView.controller.content')
-    containingEntityId = containingEntity.get('id') 
-    for relationship in relationships
-      sourceId = relationship.get('entitySource.id')
-      targetId = relationship.get('entityTarget.id')
-      if sourceId == containingEntityId && targetId
-        #provide closure for sourceId, targetId, and 'this' for deferred processing
-        Ember.run.next( 
-          ((s,t,_this) -> #close around function
-            ->
-              _this.get('parentView.instance').connect(
-                source: $(".entity-#{s} .endpoint-source")
-                target: $(".entity-#{t} .endpoint-target")
-              )
-          )(sourceId, targetId, @) #pass in saved vars
-        )
-
-  observeRelationships: ( () ->
-    @updateRelationships(@get('controller.content'))
-  ).observes('controller.content').observes('controller.content.length').observes('controller.content.@each')
-
-  relationshipCreated: (info) ->
-    #if the monitored relationship belonged to this source
-    if info.source == @$().context
-      # create relationship entity
-      @controller.send('connect', info)
-      console.log  info
-      # set up ability to be deleted
-      info.connection.bind 'click', (info) => @controller.send('remove', info)
-    false
-        
-  didInsertElement: -> 
-    jsPlumb.ready =>
-      #get instance from parent view
-      instance = @get('parentView.instance')
-      #suspend drawing and initialize SOURCE
-      instance.doWhileSuspended => 
-        #make source and set up it's 'connection created' binding
-        source = instance.makeSource(@$(), {anchor: "Continuous" })
-        source.bind 'connection', (info) => 
-          @relationshipCreated(info)
-  willDestroyElement: ->
-    instance = @get('parentView.instance')
-    if instance
-      #remove connections to self
-      instance.detachAllConnections(@$())
-      instance.repaint(@$())
+App.RelationshipView = Ember.View.extend
+  # linked template
+  templateName: 'relationship'
 
 
+  # view-relevant computed attributes
+  positioningStyle: ( () -> 
+    x = @get('controller.x')
+    width = @get('controller.width')
+    y = @get('controller.y')
+    height = @get('controller.height')
+    if x? && width? && y? && height?
+      return "left: #{x}px; width: #{width}px; top: #{y}px; height: #{height}px;"
+    return undefined
+  ).property('controller.x', 'controller.width', 'controller.y', 'controller.height')
 
-App.RelationshipTargetsView = Ember.View.extend
-  tagName: 'div'
-  classNames: 'endpoint endpoint-target'
-  relationships: null #relationships defined by parent view
+  classNameBindings: 'htmlClass'
+  htmlClass: ( () -> 
+    classes = []
 
-  didInsertElement: -> 
-    jsPlumb.ready =>
-      #get instance from parent view
-      instance = @get('parentView.instance')
-      #suspend drawing and initialize TARGET
-      instance.doWhileSuspended => 
-        #make target
-        target = instance.makeTarget(@$(), {anchor: "Continuous" })
+    # entity-#
+    id = @get('controller.id')  
+    id = 'new' if !id
+    classes.push "entity-#{id}"
 
-  willDestroyElement: ->
-    instance = @get('parentView.instance')
-    if instance
-      #remove connections to self
-      instance.detachAllConnections(@$())
-      instance.repaint(@$())
+    # dirty
+    classes.push "dirty" if @get('controller.isDirty')
+
+    # saving
+    classes.push "saving" if @get('controller.isSaving')
+
+    # error
+    classes.push "error" if @get('controller.isError')
+
+    # new
+    classes.push "new" if @get('controller.isNew')
+
+    return classes.join(' ')
+  ).property('controller.id', 'controller.isDirty', 'controller.isSaving', 'controller.isError', 'controller.isNew')
+

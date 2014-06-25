@@ -4,33 +4,33 @@
   //- view App.RelationshipTargetView relationships=relationships
   //- view App.RelationshipSourceView relationships=relationships
   unless isNew
-    render 'relationship_targets' relationships.content
-    render 'relationship_sources' relationships.content
+    .endpoint.endpoint-target
+    .endpoint.endpoint-source
       .spawner
         .icon-flow-parallel
     
-  .entity-wrap
+  .entity-wrap style=view.dimensionStyle
     //- Grab to move
     .grabbable
         .icon-move
     //- Real contents
     form submit=saveChanges
+      .top
+        =input type="text" valueBinding="name" placeholderTranslation="model.attributes.entities.name" class='input entity-name'
+      .middle
+        =textarea type="text" valueBinding="description" placeholderTranslation="model.attributes.entities.description"  class='input entity-description'
 
-      //- Form inputs
-      =input type="text" valueBinding="name" placeholderTranslation="model.attributes.entities.name" class='input entity-name'
-      =textarea type="text" valueBinding="description" placeholderTranslation="model.attributes.entities.description"  class='input entity-description'
-
-      //- Bottom goods
-      .pull-left
-        unless isNew
-          span.btn.danger.entity-delete title=view.deleteTitle click=deleteEntity
-            .icon-x
+      .bottom
+        //- Bottom goods
+        .pull-left
+          unless isNew
+            span.btn.danger.entity-delete title=view.deleteTitle click=deleteEntity
+              .icon-x
+          if isDirty
+            span.btn.warn.entity-warn title=view.rejectTitle click=rejectChanges 
+              .icon-undo
         if isDirty
-          span.btn.warn.entity-warn title=view.rejectTitle click=rejectChanges 
-            .icon-undo
-      if isDirty
-        .pull-right
-          button.btn.info.entity-save title=view.saveTitle
-            .icon-checkmark
-      .clearfix
-
+          .pull-right
+            button.btn.info.entity-save title=view.saveTitle
+              .icon-checkmark
+        .clearfix

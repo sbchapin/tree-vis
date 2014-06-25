@@ -1,0 +1,21 @@
+//- Sidebar menu goodies
+.menu
+  .button-section
+    span.btn.new title=view.newTitle click=newEntity
+      .icon-plus
+    if isDirty
+      span.btn.info title=view.saveTitle click=saveChanges
+        .icon-checkmark
+      span.btn.warn title=view.rejectTitle click=rejectChanges
+        .icon-undo
+
+//- Notifications for pushing to production
+#notification
+  =t 'view.entities.notification'
+
+#playspace
+  //- Actual entities render here
+  =render 'entities' entities
+
+  //- Actual relationships render here
+  =render 'relationships' relationships

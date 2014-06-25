@@ -1,51 +1,118 @@
+App.RelationshipController = Ember.ObjectController.extend Em.I18n.TranslateableProperties,
+  deleteForSureTranslation: 'controller.entity.deleteForSure'
+  
+  staticPadding: 11
+  x: ( () -> 
+    x1 = @get('model.entitySource.x')
+    xh1 = @get('model.entitySource.width') + @staticPadding
+    x2 = @get('model.entityTarget.x')
+    xh2 = @get('model.entityTarget.width') + @staticPadding
 
-App.RelationshipSourcesController = Ember.ArrayController.extend 
+    y1 = @get('model.entitySource.y')
+    yh1 = @get('model.entitySource.height') + @staticPadding
+    y2 = @get('model.entityTarget.y')
+    yh2 = @get('model.entityTarget.height') + @staticPadding
+    if x1 < x2           ##left
+      if y1 + yh1 < y2      #top
+        return x1
+      else if y1 - yh2 < y2 #mid
+        if x1 + xh1 > x2
+          return x2
+        return x1 + xh1
+      else                  #bottom
+        return x1 
+    else if x1 - xh2 < x2##mid
+      if y1 + yh1 < y2      #top
+        return x2
+      else if y1 - yh2 < y2 #mid
+        return x1
+      else                  #bottom
+        return x2
+    else                 ##right
+      if y1 + yh1 < y2      #top
+        return x2
+      else if y1 - yh2 < y2 #mid
+        return x2 + xh2
+      else                  #bottom
+        return x2
+      
+  ).property('model.entitySource.x', 'model.entitySource.width', 'model.entityTarget.y', 'model.entityTarget.height')
+
+  y: ( () -> 
+    return 100
+    x1 = @get('model.entitySource.x')
+    xh1 = @get('model.entitySource.width') + @staticPadding
+    x2 = @get('model.entityTarget.x')
+    xh2 = @get('model.entityTarget.width') + @staticPadding
+
+    y1 = @get('model.entitySource.y')
+    yh1 = @get('model.entitySource.height') + @staticPadding
+    y2 = @get('model.entityTarget.y')
+    yh2 = @get('model.entityTarget.height') + @staticPadding
+
+  ).property('model.entitySource.y', 'model.entitySource.height', 'model.entityTarget.y', 'model.entityTarget.height')
+  
+  width: ( () -> 
+    x1 = @get('model.entitySource.x')
+    xh1 = @get('model.entitySource.width') + @staticPadding
+    x2 = @get('model.entityTarget.x')
+    xh2 = @get('model.entityTarget.width') + @staticPadding
+
+    y1 = @get('model.entitySource.y')
+    yh1 = @get('model.entitySource.height') + @staticPadding
+    y2 = @get('model.entityTarget.y')
+    yh2 = @get('model.entityTarget.height') + @staticPadding
+    if x1 < x2           ##left
+      if y1 + yh1 < y2      #top
+        if x1 + xh1 > x2 + xh2
+          return xh1
+        return x2 - x1 + xh2
+      else if y1 - yh2 < y2 #mid
+        if x1 + xh1 > x2
+          return x1 + xh1 - x2
+        return x2 - x1 - xh1
+      else                  #bottom
+        if x1 + xh1 > x2 + xh2
+          return xh1
+        return x2 - x1 + xh2
+    else if x1 - xh2 < x2##mid
+      if y1 + yh1 < y2      #top
+        return x1 - x2 + xh1
+      else if y1 - yh2 < y2 #mid
+        return (x2 + xh2) - x1
+      else                  #bottom
+        return x1 - x2 + xh1
+    else                 ##right
+      if y1 + yh1 < y2      #top
+        return x1 - x2 + xh1
+      else if y1 - yh2 < y2 #mid
+        return x1  - x2 - xh2
+      else                  #bottom
+        return x1 - x2 + xh1
+
+  ).property('model.entitySource.x', 'model.entitySource.width', 'model.entityTarget.y', 'model.entityTarget.height')
+ 
+  height: ( () -> 
+    x1 = @get('model.entitySource.x')
+    xh1 = @get('model.entitySource.width') + @staticPadding
+    x2 = @get('model.entityTarget.x')
+    xh2 = @get('model.entityTarget.width') + @staticPadding
+
+    y1 = @get('model.entitySource.y')
+    yh1 = @get('model.entitySource.height') + @staticPadding
+    y2 = @get('model.entityTarget.y')
+    yh2 = @get('model.entityTarget.height') + @staticPadding
+    Math.abs(y1 - y2)
+    100
+  ).property('model.entitySource.y', 'model.entitySource.height', 'model.entityTarget.y', 'model.entityTarget.height')
 
   actions:
-    connect: (jsPlumbEvent) -> 
-      #get Ember View by ID
-      relationshipSourceEmberView = Ember.View.views[jsPlumbEvent.sourceId]
-      relationshipTargetEmberView = Ember.View.views[jsPlumbEvent.targetId]
-      if relationshipSourceEmberView && relationshipTargetEmberView
-        #get parent view (Entity), then its controller
-        source = relationshipSourceEmberView.get('parentView.controller.content')
-        target = relationshipTargetEmberView.get('parentView.controller.content')
-         
-        relationships = @store.all('relationship')
+    saveChanges: () ->
+      @model.save()
 
-        #if relationship exists, GTFO
-        for relationship in relationships.get('content') 
-          if (relationship.get('entitySource') == source && relationship.get('entityTarget') == target) || (relationship.get('entitySource') == target && relationship.get('entityTarget') == source)
-            #relationship exists
-            if relationship.get('isDisplayed')
-              jsPlumb.detach(jsPlumbEvent.connection) #relationship already displayed, detach 'potential' connection
-            relationship.set('isDisplayed', true)
-            return
-          
-        #relationship doesnt exist, make it
-        r = @store.createRecord 'relationship', {entitySource: source, entityTarget: target}
-        r.save()
+    rejectChanges: () ->
+      @model.rollback()
 
-    remove: (jsPlumbEvent) -> 
-      #get Ember View by ID
-      relationshipSourceEmberView = Ember.View.views[jsPlumbEvent.sourceId]
-      relationshipTargetEmberView = Ember.View.views[jsPlumbEvent.targetId]
-      if relationshipSourceEmberView && relationshipTargetEmberView
-        #get parent view (Entity), then its controller
-        source = relationshipSourceEmberView.get('parentView.controller.content')
-        target = relationshipTargetEmberView.get('parentView.controller.content')
-         
-        relationships = @store.all('relationship')
-
-        #find relationship
-        for relationship in relationships.get('content') 
-          if (relationship.get('entitySource') == source && relationship.get('entityTarget') == target) || (relationship.get('entitySource') == target && relationship.get('entityTarget') == source)
-            #relationship exists
-            relationship.destroyRecord()
-            console.log jsPlumb
-            console.log jsPlumbEvent
-            jsPlumb.detach(jsPlumbEvent.connection)
-
-App.RelationshipTargetsController = Ember.ArrayController.extend 
-  actions:
-    doStuff: () -> console.log 'this garbage'
+    deleteRelationship: () ->
+      if confirm(@get('deleteForSure'))
+        @model.destroyRecord()
