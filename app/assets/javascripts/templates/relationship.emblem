@@ -1,2 +1,6 @@
 .relationship style=view.positioningStyle class=view.classes
   .relationship-wrap
+    each connectors.active
+      div class=this
+    %svg / viewBox=svgViewBox
+      %g 

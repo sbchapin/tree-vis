@@ -1,0 +1,55 @@
+/////////////////////////////
+//Relationship bounding boxes
+$bezierAccomodation: 50px;
+$connectorSize: 20px;
+.relationships{
+	.relationship{
+		display: block;
+		position: absolute;
+
+		.relationship-wrap{
+			display: block;
+			position: absolute;
+			top: $bezierAccomodation;
+			bottom: $bezierAccomodation;
+			right: $bezierAccomodation;
+			left: $bezierAccomodation;
+
+			.ne{
+				margin-top:-($connectorSize/2);
+				margin-right:-($connectorSize/2);
+				top:0; 
+				right:0;
+			}
+			.nw{
+				margin-top:-($connectorSize/2);
+				margin-left:-($connectorSize/2);
+				top:0; 
+				left:0;
+			}
+			.se{
+				margin-bottom:-($connectorSize/2);
+				margin-right:-($connectorSize/2);
+				bottom:0; 
+				right:0;
+			}
+			.sw{
+				margin-bottom:-($connectorSize/2);
+				margin-left:-($connectorSize/2);
+				bottom:0; 
+				left:0;
+			}
+			.ne,
+			.nw,
+			.se,
+			.sw{
+				position: absolute;
+				height: $connectorSize;
+				width: $connectorSize;
+				border-radius: $connectorSize/2;
+				border:1px solid $color-default;
+				background-color: #fff;
+			}
+		}
+	}
+}

@@ -1,0 +1,162 @@
+
+//////////////
+//Entity boxes
+$entity-min-width: 200px;
+$entity-radius : 3px;
+.entities{
+	.entity{
+		@include transition(-webkit-box-shadow, 0.25s, ease-in-out);
+		@include transition(-moz-box-shadow, 0.25s, ease-in-out);
+		@include transition(box-shadow, 0.25s, ease-in-out);
+		@include transition(opacity, 0.25s, ease-in-out);
+		display: block;
+		position: absolute;
+		border-radius: $entity-radius;
+		min-width: $entity-min-width;
+		.endpoint-source, .endpoint-target{
+			position: absolute;
+			top:    0;
+			bottom: 0;
+			left:   0;
+			right:  0;
+			z-index: -1;
+		}
+		.entity-wrap{
+			form{
+				height: 100%;
+				position: relative;
+				$entity-top-height: 45px;
+				$entity-bottom-height: 27px;
+				$entity-inner-padding: 2px;
+				.top, .middle, .bottom{
+					position:absolute;
+					width: 100%;
+				}
+				.top{
+					top:0;
+					height: $entity-top-height + $entity-inner-padding;
+				}
+				.bottom{
+					bottom:0;
+					height: $entity-bottom-height;
+				}
+				.middle{
+					top: $entity-top-height + $entity-inner-padding;
+					bottom: $entity-bottom-height + $entity-inner-padding;
+				}
+			}
+			background-color: rgba(255, 255, 255, 0.8);
+			border: 1px solid $color-default;
+			border-radius: $entity-radius;
+			padding: 5px;
+			cursor: move;
+		}
+
+		$spawner-width: 4em;
+		.spawner, .grabbable{
+			position: absolute;
+			left:50%;
+			margin-left: -$spawner-width/2;
+			width: $spawner-width;
+			height: $spawner-width;
+			border-radius: $spawner-width/2;
+			background-color: $color-default;
+			color: $color-default-invert;
+			text-align: center;
+			[class^="icon"], [class*=" icon-"] {
+				font-size: $spawner-width * 0.70;
+				line-height: $spawner-width/2 * 0.70 ;
+			}
+			z-index: -1;
+		}
+
+		.grabbable{ 
+			top: -$spawner-width/2; 
+			@include transition(color, 0.05s, ease-in-out);
+			&:hover{
+				z-index: auto;
+				color: lighten($color-default-invert, 10%);
+			}
+		}
+		&.ui-draggable-dragging .grabbable{
+			z-index: auto;
+			color: lighten($color-default-invert, 10%);
+		}
+		.spawner  { 
+			background: $color-default;
+			@include background-gradient-0-50-100-vertical(rgba(255,255,255,0), $color-default, $color-default);
+			cursor: crosshair;
+			bottom: -$spawner-width/2; 
+			&:hover{
+				z-index: auto;
+				background: $color-new;
+				@include background-gradient-0-50-100-vertical(rgba(255,255,255,0), $color-new, $color-new);
+			}
+		}
+
+		.ui-resizable-handle{
+			&.ui-resizable-n,
+			&.ui-resizable-w,
+			&.ui-resizable-e,
+			&.ui-resizable-s{
+				display: none;
+			}
+			&.ui-resizable-se{
+				position:absolute;
+				display: block;
+				height: 10px;
+				width: 10px;
+				bottom: 0px;
+				right: 0px;
+				cursor: se-resize;
+				&:after{
+					content: "";
+					display: block;
+					position: absolute;
+					width: 0;
+					height: 0;
+					border-style: solid;
+					bottom: 0px;
+					right: 0px;
+					border-width: 0 0 10px 10px;
+					border-color: transparent transparent $color-default transparent;
+				}
+			}
+		}
+	}
+
+	.dirty > .entity{
+		// border:solid 2px lighten($color-warn, 30%);
+		@include box-shadow(0px,0px,5px,0px,lighten($color-warn, 20%));
+	}
+
+	// .new > .entity{
+	// 	// border:solid 2px lighten($color-new, 15%);
+	// 	@include box-shadow(0px,0px,5px,0px,lighten($color-new, 0%));
+	// }
+
+	.saving > .entity{
+		// border:solid 2px lighten($color-info, 30%);
+		@include box-shadow(0px,0px,5px,0px,lighten($color-info, 30%));
+		opacity: 0.7;
+		pointer-events: none;
+		cursor: not-allowed;
+		// &:after{
+		// 	content: "";
+		// 	display: block;
+		// 	position: absolute;
+		// 	top:0;
+		// 	bottom:0;
+		// 	left:0;
+		// 	right:0;
+		// 	@include transition(background-color, 0.5s, ease-in-out);
+		// 	background-color: rgba(255,255,255,0.7);
+		// 	border-radius: $entity-radius;
+		// 	cursor: move;
+		// }
+	}
+
+	.error > .entity{
+		@include box-shadow(0px,0px,5px,0px,lighten($color-danger, 0%));
+	}
+}
