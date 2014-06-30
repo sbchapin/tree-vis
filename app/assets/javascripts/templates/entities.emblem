@@ -1,4 +1,13 @@
+.menu
+  .button-section
+    span.btn.new title=view.newTitle click=newEntity
+      .icon-plus
+    if isDirty
+      span.btn.info title=view.saveTitle click=saveChanges
+        .icon-checkmark
+      span.btn.warn title=view.rejectTitle click=rejectChanges
+        .icon-undo
+
 .entities#entities
-  each record in controller.content
-    =with record
-      =render "entity" record
+  each content
+    =render "entity" this

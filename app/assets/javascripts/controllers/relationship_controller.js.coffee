@@ -10,7 +10,6 @@ App.RelationshipController = Ember.ObjectController.extend Em.I18n.Translateable
     directions: ['ne','nw','se','sw']
     update: (toUpdate=[]) -> 
       @set(direction, toUpdate.contains(direction)) for direction in @directions
-      console.log @get('active')
     active:( () -> (direction for direction in @directions when @get(direction) == true) ).property('ne','nw','se','sw')
     ne: false
     nw: false
@@ -151,6 +150,59 @@ App.RelationshipController = Ember.ObjectController.extend Em.I18n.Translateable
   svgViewBox: ( () -> 
     "0 0 #{@get('model.entitySource.height')} #{@get('model.entityTarget.height')}"
   ).property('model.entitySource.height', 'model.entityTarget.height')
+
+  svgConnector: ( () -> 
+    activeConnectors = @get('connectors.active')
+    start = "0 0"
+    startC = "0 0"
+    end = "0 0"
+    endC = "0 0"
+    curvature = 0.5
+    curvature = Math.max(Math.min(curvature, 1), 0)
+    y1 = @get('model.entitySource.y')
+    yh1 = @get('model.entitySource.height') + @staticPadding
+    y2 = @get('model.entityTarget.y')
+    yh2 = @get('model.entityTarget.height') + @staticPadding
+    curvatureWidth = (@get('width') - (@bezierAccomodation*2)) * curvature
+    if y1+yh1 < y2 
+      curvatureWidth = Math.min(curvatureWidth, @bezierAccomodation*2 + (y2 - (y1+yh1)) )
+    if y2+yh2 < y1
+      curvatureWidth = Math.min(curvatureWidth, @bezierAccomodation*2 + (y1 - (y2+yh2)) )
+    
+      
+
+    # endpoints
+    if activeConnectors[0] == "nw"
+      start = @bezierAccomodation + " " + @bezierAccomodation
+      if activeConnectors[1] == "se"
+        if y1+yh1 < y2 || y2+yh2 < y1
+          startC = @bezierAccomodation + " " + (@bezierAccomodation + curvatureWidth)
+        else
+          startC = @bezierAccomodation + curvatureWidth + " " + @bezierAccomodation
+    if activeConnectors[0] == "ne"
+      start = (@get('width') - @bezierAccomodation) + " " + @bezierAccomodation
+      if activeConnectors[1] == "sw"
+        if y1+yh1 < y2 || y2+yh2 < y1
+          startC = (@get('width') - @bezierAccomodation) + " " + (@bezierAccomodation + curvatureWidth)
+        else
+          startC = (@get('width') - @bezierAccomodation) - curvatureWidth + " " + @bezierAccomodation
+    if activeConnectors[1] == "sw"
+      end = @bezierAccomodation + " " + (@get('height') - @bezierAccomodation)
+      if activeConnectors[0] == "ne"
+        if y1+yh1 < y2 || y2+yh2 < y1
+          endC = @bezierAccomodation + " " + (@get('height') - @bezierAccomodation - curvatureWidth)
+        else
+          endC = @bezierAccomodation + curvatureWidth + " " + (@get('height') - @bezierAccomodation)
+    if activeConnectors[1] == "se"
+      end = (@get('width') - @bezierAccomodation) + " " + (@get('height') - @bezierAccomodation)
+      if activeConnectors[0] == "nw"
+        if y1+yh1 < y2 || y2+yh2 < y1
+          endC = (@get('width') - @bezierAccomodation) + " " + ((@get('height') - @bezierAccomodation) - curvatureWidth)
+        else
+          endC = (@get('width') - @bezierAccomodation) - curvatureWidth + " " + (@get('height') - @bezierAccomodation)
+   
+    return "M #{start} C #{startC} #{endC} #{end}"
+  ).property('model.entitySource.x', 'model.entitySource.width', 'model.entityTarget.y', 'model.entityTarget.height')
 
   actions:
     saveChanges: () ->

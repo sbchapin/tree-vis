@@ -12,7 +12,7 @@ App.Router.map ->
 #DOCS
 App.IndexRoute = Ember.Route.extend
   setupController: (controller, model) -> 
-  	entities = @store.find('entity')
-  	relationships = @store.find('relationship')
-  	controller.set('entities', entities)
-  	controller.set('relationships', relationships)
+    entities = @store.find('entity')
+    relationships = @store.find('relationship')
+    controller.set('entities', entities)
+    controller.set('relationships', relationships)

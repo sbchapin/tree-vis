@@ -13,6 +13,7 @@ $entity-radius : 3px;
 		position: absolute;
 		border-radius: $entity-radius;
 		min-width: $entity-min-width;
+		z-index: 100;
 		.endpoint-source, .endpoint-target{
 			position: absolute;
 			top:    0;

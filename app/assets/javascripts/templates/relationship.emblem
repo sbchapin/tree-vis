@@ -2,5 +2,6 @@
   .relationship-wrap
     each connectors.active
       div class=this
-    %svg / viewBox=svgViewBox
+    %svg xmlns="http://www.w3.org/2000/svg" / viewBox=svgViewBox
       %g 
+      	%path d=svgConnector stroke="gray" stroke-width="10" fill="none"

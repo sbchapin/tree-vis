@@ -8,13 +8,13 @@ App.RelationshipsController = Ember.ArrayController.extend
       if entity.get("isDirty")
         isDirty ||= true
     @set('isDirty', isDirty)
-  ).observes('content.@each.isDirty').on('init')
+  ).observes('content.@each.isDirty')
 
   actions:
     saveChanges: () ->
-      for model in @get('model.content') when model.get('isDirty')
+      for model in @get('content') when model.get('isDirty')
         model.save()
 
     rejectChanges: () ->
-      for model in @get('model.content') when model.get('isDirty')
+      for model in @get('content') when model.get('isDirty')
         model.rollback()

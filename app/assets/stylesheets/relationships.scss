@@ -6,36 +6,37 @@ $connectorSize: 20px;
 	.relationship{
 		display: block;
 		position: absolute;
+		z-index: -100;
 
 		.relationship-wrap{
 			display: block;
 			position: absolute;
-			top: $bezierAccomodation;
-			bottom: $bezierAccomodation;
-			right: $bezierAccomodation;
-			left: $bezierAccomodation;
+			top: 0;
+			bottom: 0;
+			right: 0;
+			left: 0;
 
 			.ne{
-				margin-top:-($connectorSize/2);
-				margin-right:-($connectorSize/2);
+				margin-top:-($connectorSize/2 - $bezierAccomodation);
+				margin-right:-($connectorSize/2 - $bezierAccomodation);
 				top:0; 
 				right:0;
 			}
 			.nw{
-				margin-top:-($connectorSize/2);
-				margin-left:-($connectorSize/2);
+				margin-top:-($connectorSize/2 - $bezierAccomodation);
+				margin-left:-($connectorSize/2 - $bezierAccomodation);
 				top:0; 
 				left:0;
 			}
 			.se{
-				margin-bottom:-($connectorSize/2);
-				margin-right:-($connectorSize/2);
+				margin-bottom:-($connectorSize/2 - $bezierAccomodation);
+				margin-right:-($connectorSize/2 - $bezierAccomodation);
 				bottom:0; 
 				right:0;
 			}
 			.sw{
-				margin-bottom:-($connectorSize/2);
-				margin-left:-($connectorSize/2);
+				margin-bottom:-($connectorSize/2 - $bezierAccomodation);
+				margin-left:-($connectorSize/2 - $bezierAccomodation);
 				bottom:0; 
 				left:0;
 			}
@@ -48,7 +49,8 @@ $connectorSize: 20px;
 				width: $connectorSize;
 				border-radius: $connectorSize/2;
 				border:1px solid $color-default;
-				background-color: #fff;
+				background-color: $color-default;
+				color: $color-default-invert;
 			}
 		}
 	}
