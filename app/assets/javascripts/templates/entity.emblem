@@ -6,7 +6,7 @@
   unless isNew
     .endpoint.endpoint-target
     .endpoint.endpoint-source
-      .spawner
+      .spawner click="startPick target='view'"
         .icon-flow-parallel
     
   .entity-wrap style=view.dimensionStyle

@@ -41,6 +41,13 @@ $color-new: #00B25C;
 	background: -ms-linear-gradient(top, $top-color 0%,$middle-color 50%,$bottom-color 100%); /* IE10+ */
 	background: linear-gradient(to bottom, $top-color 0%,$middle-color 50%,$bottom-color 100%); /* W3C */
 }
+@mixin filter($func){
+  -webkit-filter: $func;
+  -moz-filter: $func;
+  -o-filter: $func;
+  -ms-filter: $func;
+  filter: $func;
+}
 
 @import "entities";
 @import "relationships";

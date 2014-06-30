@@ -90,3 +90,20 @@ App.EntityView = Ember.View.extend Em.I18n.TranslateableProperties,
       resize: (event, ui) => @resize(event, ui)
     )
     @$(".ui-resizable-handle.ui-resizable-se").dblclick => @resetDimension()
+
+
+  click: ->
+    if @get('isPicking') != true && @get('parentView.isPicking')
+      @get('parentView').send('endPick', @)
+
+  isPicking: false
+  actions:
+    startPick: ->
+      @get('parentView').send('startPick', @)
+      @$().addClass('disabled')
+      @set('isPicking', true)
+    endPick: (pickedView) ->
+      if @ != pickedView
+        @get('controller').send('createRelationship', pickedView.get('controller'))
+        @set('isPicking', false)
+        @$().removeClass('disabled')

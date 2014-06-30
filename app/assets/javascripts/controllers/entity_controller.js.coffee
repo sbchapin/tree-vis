@@ -14,3 +14,11 @@ App.EntityController = Ember.ObjectController.extend Em.I18n.TranslateableProper
       if confirm(@get('deleteForSure'))
         model = @get('model')
         model.destroyRecord()
+
+    createRelationship: (targetEntity) ->
+      sourceModel = @get('content')
+      targetModel = targetEntity.get('content')
+      if sourceModel && targetModel && sourceModel != targetModel
+        r = @store.createRecord 'relationship',
+          entitySource: sourceModel
+          entityTarget: targetModel

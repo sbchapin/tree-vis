@@ -3,6 +3,7 @@
 //Entity boxes
 $entity-min-width: 200px;
 $entity-radius : 3px;
+$spawner-width: 4em;
 .entities{
 	.entity{
 		@include transition(-webkit-box-shadow, 0.25s, ease-in-out);
@@ -53,7 +54,7 @@ $entity-radius : 3px;
 			cursor: move;
 		}
 
-		$spawner-width: 4em;
+		
 		.spawner, .grabbable{
 			position: absolute;
 			left:50%;
@@ -159,5 +160,60 @@ $entity-radius : 3px;
 
 	.error > .entity{
 		@include box-shadow(0px,0px,5px,0px,lighten($color-danger, 0%));
+	}
+}
+
+
+
+// entity picking
+.picking > .entities{
+	cursor: pointer;
+	.entity:after{
+		content: "";
+		display: block;
+		position: absolute;
+		top: -50px;
+		bottom: -50px;
+		left: 0;
+		right: 0;
+		z-index: 1000;
+	}
+
+	.entity,
+	.entity .grabbable,
+	.entity .spawner {
+		@include transition(box-shadow, 0.1s, ease-in-out);
+	}
+	.entity:hover,
+	.entity:hover .grabbable,
+	.entity:hover .spawner {
+		@include box-shadow(0px,0px,10px,0px,desaturate(lighten($color-new, 20%), 30%));
+	}
+
+	.disabled > .entity{
+		z-index: 98;
+	}
+	.disabled > .entity 
+	{
+		@include box-shadow(0px,0px,8px,0px,$color-new);
+		& > .endpoint > .spawner{
+			z-index: auto;
+			background: $color-new;
+			@include background-gradient-0-50-100-vertical(rgba(255,255,255,0), $color-new, $color-new);
+		}
+	}
+
+	&:after{
+		content: "";
+		display: block;
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		z-index: 99;
+		opacity: 0.7;
+		background-color: $color-default;
+		@include filter(blur(5px));
 	}
 }
