@@ -3,7 +3,6 @@
 #= require jquery.ui.draggable
 #= require jquery.ui.droppable
 #= require touch-punch-min
-#= require d3-min
 #= require handlebars
 #= require ember
 #= require ember-data

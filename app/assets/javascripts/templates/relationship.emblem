@@ -1,7 +1,15 @@
-.relationship style=view.positioningStyle class=view.classes
+.relationship style=view.positioningStyle class=view.htmlClass
   .relationship-wrap
-    each connectors.active
+    each connectors
       div class=this
     %svg xmlns="http://www.w3.org/2000/svg" / viewBox=svgViewBox
-      %g 
-      	%path d=svgConnector stroke="gray" stroke-width="10" fill="none"
+      %g
+        %path d=svgConnector
+    .relationship-actions
+      if isDirty
+        span.btn.info.relationship-save title=view.saveTitle click=saveChanges
+          .icon-checkmark
+        span.btn.warn.relationship-warn title=view.rejectTitle click=rejectChanges 
+          .icon-undo
+      unless isDirty
+        =twoclick-delete title=view.deleteTitle action="deleteEntity"

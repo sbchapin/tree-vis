@@ -2,23 +2,43 @@ App.EntityController = Ember.ObjectController.extend Em.I18n.TranslateableProper
   deleteForSureTranslation: 'controller.entity.deleteForSure'
   
   actions:
-    saveChanges: () ->
-      model = @get('model')
-      model.save()
+    saveChanges: () -> @get('model').save()
 
-    rejectChanges: () ->
-      model = @get('model')
-      model.rollback()
+    rejectChanges: () -> @get('model').rollback()
 
     deleteEntity: () ->
-      if confirm(@get('deleteForSure'))
-        model = @get('model')
-        model.destroyRecord()
+      relationships = @get('model.relationships')
+      entity = @get('model')
+      successCount = 0
+      neededSuccesses = relationships.get('length')
+
+      if neededSuccesses == 0
+        entity.destroyRecord()
+
+      for relationship in relationships.slice(0)
+        Ember.Logger.log relationship
+        relationship.destroyRecord().then () => 
+          successCount += 1
+          entity.destroyRecord() if successCount == neededSuccesses
 
     createRelationship: (targetEntity) ->
-      sourceModel = @get('content')
-      targetModel = targetEntity.get('content')
-      if sourceModel && targetModel && sourceModel != targetModel
+      source = @get('content')
+      target = targetEntity.get('content')
+      if source && target && source != target
+        hasRelationship = false
+
+        sourceRelationships = source.get('relationships')
+        sourceRelationships.forEach (relationship) =>
+          hasRelationship ||= (relationship.get('entitySource') == target || relationship.get('entityTarget') == target)
+
+        return if hasRelationship
+
+        targetRelationships = target.get('relationships')
+        targetRelationships.forEach (relationship) =>
+          hasRelationship ||= (relationship.get('entitySource') == source || relationship.get('entityTarget') == source)
+
+        return if hasRelationship
+
         r = @store.createRecord 'relationship',
-          entitySource: sourceModel
-          entityTarget: targetModel
+          entitySource: source
+          entityTarget: target

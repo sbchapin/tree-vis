@@ -8,6 +8,22 @@ $connectorSize: 20px;
 		position: absolute;
 		z-index: -100;
 
+		path {
+			stroke: gray; 
+			stroke-width: 10;
+			fill: none;
+		}
+		&.dirty path{
+			stroke: $color-warn;
+		}
+		&.error path{
+			stroke: $color-danger;
+		}
+		&.saving path{
+			stroke: $color-info;
+		}
+		
+
 		.relationship-wrap{
 			display: block;
 			position: absolute;
@@ -52,6 +68,79 @@ $connectorSize: 20px;
 				background-color: $color-default;
 				color: $color-default-invert;
 			}
+			
+		
+		}
+		&{
+			$connectionActionsSize: 44px;
+			$connectionActionsFontSize: 14px;
+			$connectionActionsSizePadding: 2px;
+			.relationship-actions{
+				position: absolute;
+				display: block;
+				opacity: 1;
+				top:50%;
+				margin-top: -($connectionActionsSize/2);
+				right: 50%;
+				margin-right: -($connectionActionsSize/2);
+				width: $connectionActionsSize - $connectionActionsSizePadding;
+				height: $connectionActionsSize - $connectionActionsSizePadding;
+				border-radius: $connectionActionsSize/2;
+				padding: $connectionActionsSizePadding;
+				background-color: $color-default;
+				.btn{
+					position: relative;
+					> *{
+						position: absolute;
+						font-size: $connectionActionsFontSize;
+						height: $connectionActionsFontSize;
+						width: $connectionActionsFontSize;
+						top:50%;
+						right:50%;
+						margin-top:-($connectionActionsFontSize/2);
+						margin-right:-($connectionActionsFontSize/2);
+					}
+					width: ($connectionActionsSize - $connectionActionsSizePadding);
+					height: ($connectionActionsSize - $connectionActionsSizePadding)/2;
+					-webkit-border-radius: 1px;
+					-moz-border-radius: 1px;
+					border-radius: 1px;
+				}
+				.btn.info{
+					border-color: lighten($color-info, 5%);
+					-webkit-border-top-left-radius: ($connectionActionsSize - $connectionActionsSizePadding)/2;
+					-webkit-border-top-right-radius: ($connectionActionsSize - $connectionActionsSizePadding)/2;
+					-moz-border-radius-topleft: ($connectionActionsSize - $connectionActionsSizePadding)/2;
+					-moz-border-radius-topright: ($connectionActionsSize - $connectionActionsSizePadding)/2;
+					border-top-left-radius: ($connectionActionsSize - $connectionActionsSizePadding)/2;
+					border-top-right-radius: ($connectionActionsSize - $connectionActionsSizePadding)/2;
+				}
+				.btn.warn{
+					border-color: lighten($color-warn, 10%);
+					-webkit-border-bottom-right-radius: ($connectionActionsSize - $connectionActionsSizePadding)/2;
+					-webkit-border-bottom-left-radius: ($connectionActionsSize - $connectionActionsSizePadding)/2;
+					-moz-border-radius-bottomright: ($connectionActionsSize - $connectionActionsSizePadding)/2;
+					-moz-border-radius-bottomleft: ($connectionActionsSize - $connectionActionsSizePadding)/2;
+					border-bottom-right-radius: ($connectionActionsSize - $connectionActionsSizePadding)/2;
+					border-bottom-left-radius: ($connectionActionsSize - $connectionActionsSizePadding)/2;
+				}
+				.btn.danger,
+				.btn.default{
+					height: ($connectionActionsSize - $connectionActionsSizePadding);
+					-webkit-border-radius: ($connectionActionsSize - $connectionActionsSizePadding)/2;
+					-moz-border-radius: ($connectionActionsSize - $connectionActionsSizePadding)/2;
+					border-radius: ($connectionActionsSize - $connectionActionsSizePadding)/2;
+				}
+			}
+		}
+		&.dirty .relationship-actions{
+			background-color: $color-warn;
+		}
+		&.error .relationship-actions{
+			background-color: $color-danger;
+		}
+		&.saving .relationship-actions{
+			background-color: $color-info;
 		}
 	}
 }

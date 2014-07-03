@@ -1,8 +1,12 @@
 # for more details see: http://emberjs.com/guides/views/
-App.RelationshipView = Ember.View.extend
+App.RelationshipView = Ember.View.extend Em.I18n.TranslateableProperties,
   # linked template
   templateName: 'relationship'
 
+  # translations
+  deleteTitleTranslation:'view.generic.delete'
+  rejectTitleTranslation:'view.generic.reject'
+  saveTitleTranslation:'view.generic.save'
 
   # view-relevant computed attributes
   positioningStyle: ( () -> 
@@ -19,10 +23,10 @@ App.RelationshipView = Ember.View.extend
   htmlClass: ( () -> 
     classes = []
 
-    # entity-#
+    # relationship-#
     id = @get('controller.id')  
     id = 'new' if !id
-    classes.push "entity-#{id}"
+    classes.push "relationship-#{id}"
 
     # dirty
     classes.push "dirty" if @get('controller.isDirty')

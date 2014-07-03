@@ -18,7 +18,6 @@ class EntitiesController < ApplicationController
   # POST /entities.json
   def create
     @entity = Entity.new(entity_params)
-    sleep(2.0)
     respond_to do |format|
       if @entity.save
         format.json { render json: @entity, status: :created}

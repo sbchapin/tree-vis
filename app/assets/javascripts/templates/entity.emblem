@@ -24,8 +24,7 @@
         //- Bottom goods
         .pull-left
           unless isNew
-            span.btn.danger.entity-delete title=view.deleteTitle click=deleteEntity
-              .icon-x
+            =twoclick-delete action="deleteEntity"
           if isDirty
             span.btn.warn.entity-warn title=view.rejectTitle click=rejectChanges 
               .icon-undo

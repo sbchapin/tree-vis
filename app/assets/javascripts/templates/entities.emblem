@@ -1,13 +1,4 @@
-.menu
-  .button-section
-    span.btn.new title=view.newTitle click=newEntity
-      .icon-plus
-    if isDirty
-      span.btn.info title=view.saveTitle click=saveChanges
-        .icon-checkmark
-      span.btn.warn title=view.rejectTitle click=rejectChanges
-        .icon-undo
-
 .entities#entities
+  input type='text' style='opacity:0;cursor:default;' class='sneaky-input-capture'
   each content
     =render "entity" this

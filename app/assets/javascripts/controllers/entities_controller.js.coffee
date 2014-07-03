@@ -9,17 +9,3 @@ App.EntitiesController = Ember.ArrayController.extend
         isDirty ||= true
     @set('isDirty', isDirty)
   ).observes('content.@each.isDirty')
-
-  actions:
-    saveChanges: () ->
-      for model in @get('content') when model.get('isDirty')
-        model.save()
-
-    rejectChanges: () ->
-      for model in @get('content') when model.get('isDirty')
-        model.rollback()
-
-    newEntity: () ->
-      post = @store.createRecord('entity')
-      post.set('x', 400)
-      post.set('y', 400)

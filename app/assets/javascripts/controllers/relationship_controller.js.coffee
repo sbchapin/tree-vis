@@ -6,16 +6,7 @@ App.RelationshipController = Ember.ObjectController.extend Em.I18n.Translateable
   bezierAccomodation: 50
 
   # Which connectors should be drawn
-  connectors: Ember.Object.extend(
-    directions: ['ne','nw','se','sw']
-    update: (toUpdate=[]) -> 
-      @set(direction, toUpdate.contains(direction)) for direction in @directions
-    active:( () -> (direction for direction in @directions when @get(direction) == true) ).property('ne','nw','se','sw')
-    ne: false
-    nw: false
-    se: false
-    sw: false
-  ).create()
+  connectors: []
 
   positionAndShapeUpdate: ( () -> 
     x1 = @get('model.entitySource.x')
@@ -29,24 +20,24 @@ App.RelationshipController = Ember.ObjectController.extend Em.I18n.Translateable
     yh2 = @get('model.entityTarget.height') + @staticPadding
     if x1+(xh1/2) < x2+(xh2/2) # west
       if y1+yh1 < y2 # north
-        @connectors.update(['nw','se'])
+        @set('connectors', ['nw','se'])
       else if y1 > y2+yh2 #south
-        @connectors.update(['ne','sw'])
+        @set('connectors', ['ne','sw'])
       else # middle
         if y1+(yh1/2) < y2+(yh2/2)
-          @connectors.update(['nw','se'])
+          @set('connectors', ['nw','se'])
         else
-          @connectors.update(['ne','sw'])
+          @set('connectors', ['ne','sw'])
     else # east
       if y1+yh1 < y2 # north
-        @connectors.update(['ne','sw'])
+        @set('connectors', ['ne','sw'])
       else if y1 > y2+yh2 # south
-        @connectors.update(['nw','se'])
+        @set('connectors', ['nw','se'])
       else # middle
         if y1+(yh1/2) < y2+(yh2/2)
-          @connectors.update(['ne','sw'])
+          @set('connectors', ['ne','sw'])
         else
-          @connectors.update(['nw','se'])
+          @set('connectors', ['nw','se'])
   ).observes('model.entitySource.x', 'model.entitySource.width', 'model.entityTarget.y', 'model.entityTarget.height').on('init')
 
   x: ( () -> 
@@ -152,7 +143,7 @@ App.RelationshipController = Ember.ObjectController.extend Em.I18n.Translateable
   ).property('model.entitySource.height', 'model.entityTarget.height')
 
   svgConnector: ( () -> 
-    activeConnectors = @get('connectors.active')
+    activeConnectors = @get('connectors')
     start = "0 0"
     startC = "0 0"
     end = "0 0"
@@ -205,12 +196,8 @@ App.RelationshipController = Ember.ObjectController.extend Em.I18n.Translateable
   ).property('model.entitySource.x', 'model.entitySource.width', 'model.entityTarget.y', 'model.entityTarget.height')
 
   actions:
-    saveChanges: () ->
-      @model.save()
+    saveChanges: () -> @get('model').save()
 
-    rejectChanges: () ->
-      @model.rollback()
+    rejectChanges: () -> @get('model').rollback()
 
-    deleteRelationship: () ->
-      if confirm(@get('deleteForSure'))
-        @model.destroyRecord()
+    deleteEntity: () -> @get('model').destroyRecord()

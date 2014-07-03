@@ -107,3 +107,6 @@ App.EntityView = Ember.View.extend Em.I18n.TranslateableProperties,
         @get('controller').send('createRelationship', pickedView.get('controller'))
         @set('isPicking', false)
         @$().removeClass('disabled')
+    cancelPick: ->
+      @set('isPicking', false)
+      @$().removeClass('disabled')

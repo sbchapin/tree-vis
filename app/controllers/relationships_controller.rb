@@ -18,7 +18,6 @@ class RelationshipsController < ApplicationController
   # POST /relationships.json
   def create
     @relationship = Relationship.new(relationship_params)
-
     respond_to do |format|
       if @relationship.save
         format.json { render json: @relationship, status: :created}

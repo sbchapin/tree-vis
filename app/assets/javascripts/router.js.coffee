@@ -7,9 +7,6 @@ App.Router.map ->
 #   #   error: (e) -> 
 #   #     true # let other error handlers catch it
 
-
-
-#DOCS
 App.IndexRoute = Ember.Route.extend
   setupController: (controller, model) -> 
     entities = @store.find('entity')

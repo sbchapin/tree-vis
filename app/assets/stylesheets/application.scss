@@ -66,6 +66,14 @@ dl{
 .pull-right{
 	float: right;
 }
+.superscript{
+	font-size: 10px;
+	width: 0px;
+	height: 0px;
+	line-height: 4px;
+	float: right;
+	display: inline-block;
+}
 .clearfix{
 	content: "";
 	display: table;
@@ -235,5 +243,16 @@ button{
 		&:active{
 			background-color: darken($color-danger, 5%);
 		}
+	}
+}
+// multiclick danger
+.click-1 > .btn.danger{
+	border-color: lighten($color-default, 0%);
+	background-color: lighten($color-default, 10%);
+	&:hover{
+		background-color: lighten($color-default, 15%);
+	}
+	&:active{
+		background-color: darken($color-default, 5%);
 	}
 }
