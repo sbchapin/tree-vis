@@ -1,7 +1,7 @@
 App.MulticlickVerifierComponent = Ember.Component.extend
   steps: 2
   curClick: 0
-  classNameBindings: [ "stepClass" ] 
+  classNameBindings: [ "stepClass" ]
 
   stepClass: ( () -> "click-#{(@get('curClick') % @get('steps')) + 1}" ).property('curClick', 'steps')
 

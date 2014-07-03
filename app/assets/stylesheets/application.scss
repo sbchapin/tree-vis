@@ -93,11 +93,19 @@ $menu-icon-size: 3.5em;
 .menu{
 	position: fixed;
 	z-index:1000;
-	overflow-x: hidden;
 	top:0px;
 	bottom: 0px;
-	left: 0px;
 	background-color: darken(rgba($color-default, 0.95), 20%);
+}
+.menu + .menu{
+	border-left: 1px solid darken(rgba($color-default, 0.90), 20%);
+	background-color: darken(rgba($color-default, 0.95), 22%);
+}
+#main-menu{
+	overflow-x: hidden;
+	left: 0px;
+	width: 120px;
+
 	.button-section{
 		margin: 5px;
 		.btn{
@@ -107,8 +115,45 @@ $menu-icon-size: 3.5em;
 			margin: $menu-icon-size/16;
 			display: block;
 		}
+		.sep{
+			display: block;
+			width:100%;
+			border-top: 1px solid darken(rgba($color-default, 0.90), 20%);
+			border-bottom: 1px solid darken(rgba($color-default, 0.90), 15%);
+		}
+		.btn.toggle{
+			&:after{
+				content: "";
+				display: block;
+				position: absolute;
+				top: 50%;
+				margin-top: -8px;
+				width: 0;
+				height: 0;
+				border-style: solid;
+				border-width: 8px 0 8px 8px;
+				border-color: transparent transparent transparent #DDD;
+				right: -16px;
+				@include transition(opacity, 0.1s, ease-in-out);
+				opacity: 0;
+			}
+		}
+		.btn.toggle.active{
+			position: relative;
+			&:after{
+				opacity: 1;
+			}
+		}
 	}
-
+}
+#settings-menu
+{
+	left: 120px;
+	@include transition(width, 0.10s, ease-in-out);
+	width: 240px;
+	&.hide{
+		width: 0px;
+	}
 }
 
 //////////////
@@ -196,10 +241,12 @@ button{
 	color: white;
 	@include transition(background-color, 0.1s, ease-in-out);
 
-	&:hover{
+	&:hover,
+	&.hover{
 		background-color: lighten($color-default, 30%);
 	}
-	&:active{
+	&:active,
+	&.active{
 		@include transition(background-color, 0.05s, linear);
 		-webkit-box-shadow: inset 0px 2px 5px 0px rgba(0,0,0,0.15);
 		-moz-box-shadow: inset 0px 2px 5px 0px rgba(0,0,0,0.15);
@@ -210,30 +257,36 @@ button{
 	&.new{
 		border-color: lighten($color-new, 0%);
 		background-color: lighten($color-new, 5%);
-		&:hover{
+		&:hover,
+		&.hover{
 			background-color: lighten($color-new, 10%);
 		}
-		&:active{
+		&:active,
+		&.active{
 			background-color: lighten($color-new, 3%);
 		}
 	}
 	&.info{
 		border-color: lighten($color-info, 0%);
 		background-color: lighten($color-info, 5%);
-		&:hover{
+		&:hover,
+		&.hover{
 			background-color: lighten($color-info, 10%);
 		}
-		&:active{
+		&:active,
+		&.active{
 			background-color: lighten($color-info, 3%);
 		}
 	}
 	&.warn{
 		border-color: lighten($color-warn, 0%);
 		background-color: lighten($color-warn, 10%);
-		&:hover{
+		&:hover,
+		&.hover{
 			background-color: lighten($color-warn, 20%);
 		}
-		&:active{
+		&:active,
+		&.active{
 			background-color: lighten($color-warn, 0%);
 			-webkit-box-shadow: inset 0px 2px 5px 0px rgba(0,0,0,0.30);
 			-moz-box-shadow: inset 0px 2px 5px 0px rgba(0,0,0,0.30);
@@ -243,22 +296,27 @@ button{
 	&.danger{
 		border-color: lighten($color-danger, 0%);
 		background-color: lighten($color-danger, 10%);
-		&:hover{
+		&:hover,
+		&.hover{
 			background-color: lighten($color-danger, 15%);
 		}
-		&:active{
+		&:active,
+		&.active{
 			background-color: darken($color-danger, 5%);
 		}
 	}
 }
+
 // multiclick danger
 .click-1 > .btn.danger{
 	border-color: lighten($color-default, 0%);
 	background-color: lighten($color-default, 10%);
-	&:hover{
+	&:hover,
+		&.hover{
 		background-color: lighten($color-default, 15%);
 	}
-	&:active{
+	&:active,
+		&.active{
 		background-color: darken($color-default, 5%);
 	}
 }

@@ -42,3 +42,7 @@ App.IndexController = Ember.ArrayController.extend
         relationship.rollback() if relationship.get('isDirty')
 
     newEntity: (x, y) -> @store.createRecord 'entity', {x: x, y: y}
+
+
+    showSettings: () -> @set('settingsMenu', true)
+    hideSettings: () -> @set('settingsMenu', false)

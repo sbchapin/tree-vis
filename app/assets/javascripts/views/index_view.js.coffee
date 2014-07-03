@@ -1,6 +1,7 @@
 App.IndexView = Ember.View.extend
   # linked template
   templateName: 'index'
+
   actions:
     newEntity: () ->
       #positions next to the button regardless of where we are

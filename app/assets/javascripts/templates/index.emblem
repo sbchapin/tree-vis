@@ -10,8 +10,14 @@
     if isDirty
       span.btn.info title=view.saveTitle click=saveChanges
         .icon-checkmark
-      span.btn.warn title=view.rejectTitle click=rejectChanges
+      span.btn.warn title=rejectTitle click=rejectChanges
         .icon-undo
+    span.sep
+    =main-menu-toggle press="showSettings" release="hideSettings"
+      .icon-cog
+.menu#settings-menu class=settingsMenu:show:hide
+  //- =render 'settings'
+
 //- Actual entities render here
 =render 'entities' entities.content.content
 //- Actual relationships render here
