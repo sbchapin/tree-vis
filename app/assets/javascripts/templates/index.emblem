@@ -3,9 +3,9 @@
 //- Notifications for pushing to production
 #notification
   =t 'view.entities.notification'
-.menu
+.menu#main-menu
   .button-section
-    span.btn.new title=view.newTitle click=newEntity
+    span.btn.new title=view.newTitle click="newEntity target='view'"
       .icon-plus
     if isDirty
       span.btn.info title=view.saveTitle click=saveChanges
@@ -14,6 +14,5 @@
         .icon-undo
 //- Actual entities render here
 =render 'entities' entities.content.content
-
 //- Actual relationships render here
 =render 'relationships' relationships.content.content

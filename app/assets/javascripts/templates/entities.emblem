@@ -1,3 +1,4 @@
+.dragscrollable-area style=boundingBox
 .entities#entities
   input type='text' style='opacity:0;cursor:default;' class='sneaky-input-capture'
   each content

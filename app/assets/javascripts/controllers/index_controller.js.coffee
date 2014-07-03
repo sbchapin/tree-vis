@@ -15,19 +15,25 @@ App.IndexController = Ember.ArrayController.extend
       possiblyDirtyEntities = entities.get('length')
       successCount = 0
 
+      # define function to save relationships
+      getRelationships = () => @get('relationships.content').forEach (relationship) =>
+        relationship.save() if relationship.get('isDirty')
+
       # Save all entities first
       entities.forEach (entity) =>
         if entity.get('isDirty')
           entity.save().then () =>
             successCount += 1
-
+            console.log successCount
             # Then save all relationships
             if successCount == possiblyDirtyEntities
-              @get('relationships.content').forEach (relationship) ->
-                relationship.save() if relationship.get('isDirty')
+              getRelationships()
         else
           possiblyDirtyEntities -= 1
 
+      # If no entities to save, save relationships
+      if possiblyDirtyEntities == 0
+        getRelationships()
       
     rejectChanges: () ->
       @get('entities.content').forEach (entity) ->
@@ -35,7 +41,4 @@ App.IndexController = Ember.ArrayController.extend
       @get('relationships.content').forEach (relationship) ->
         relationship.rollback() if relationship.get('isDirty')
 
-    newEntity: () ->
-      post = @store.createRecord('entity')
-      post.set('x', 400)
-      post.set('y', 400)
+    newEntity: (x, y) -> @store.createRecord 'entity', {x: x, y: y}

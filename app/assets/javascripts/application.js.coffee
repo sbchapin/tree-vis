@@ -2,6 +2,7 @@
 #= require jquery.ui.resizable
 #= require jquery.ui.draggable
 #= require jquery.ui.droppable
+#= require dragscrollable
 #= require touch-punch-min
 #= require handlebars
 #= require ember

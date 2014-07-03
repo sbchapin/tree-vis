@@ -6,7 +6,6 @@ $connectorSize: 20px;
 	.relationship{
 		display: block;
 		position: absolute;
-		z-index: -100;
 
 		path {
 			stroke: gray; 
@@ -78,7 +77,7 @@ $connectorSize: 20px;
 			.relationship-actions{
 				position: absolute;
 				display: block;
-				opacity: 1;
+				z-index: 150;
 				top:50%;
 				margin-top: -($connectionActionsSize/2);
 				right: 50%;

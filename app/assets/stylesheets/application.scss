@@ -52,11 +52,17 @@ $color-new: #00B25C;
 @import "entities";
 @import "relationships";
 
-
+html,
 body{
 	font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
-
+	margin:0;
+	padding:0;
 }
+.dragscrollable-area{
+	position: absolute;
+	z-index: 125;
+}
+
 dl{
 	margin: 0;
 }
@@ -86,7 +92,7 @@ dl{
 $menu-icon-size: 3.5em;
 .menu{
 	position: fixed;
-	z-index:100;
+	z-index:1000;
 	overflow-x: hidden;
 	top:0px;
 	bottom: 0px;
