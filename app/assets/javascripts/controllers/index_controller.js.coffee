@@ -10,8 +10,8 @@ App.IndexController = Ember.ArrayController.extend
     isDirty
   ).property('entities.content.@each.isDirty', 'relationships.content.@each.isDirty', 'controllers.settings.setting.isDirty')
   
-  # Get the first setting in settings.  Should be refactored to get USER's settings, not first.
-  setting: ( () -> (@get('settings.content') || [null])[0]).property('settings', 'settings.content')
+  defaultWidth:  ( () ->@get('controllers.settings.setting.defaultWidth') ).property('controllers.settings.setting.defaultWidth')
+  defaultHeight: ( () ->@get('controllers.settings.setting.defaultHeight')).property('controllers.settings.setting.defaultHeight')
 
   actions:
     saveChanges: () ->
@@ -48,7 +48,13 @@ App.IndexController = Ember.ArrayController.extend
       @get('relationships.content').forEach (relationship) ->
         relationship.rollback() if relationship.get('isDirty')
 
-    newEntity: (x, y) -> @store.createRecord 'entity', {x: x, y: y}
+    newEntity: (x, y) -> 
+      defaultWidth = @get('defaultWidth')
+      defaultHeight = @get('defaultHeight')
+      dimensions = {x: x, y: y}
+      dimensions["width"] = defaultWidth if defaultWidth?
+      dimensions["height"] = defaultHeight if defaultHeight?
+      @store.createRecord 'entity', dimensions
 
 
     showSettings: () -> @set('settingsMenu', true)

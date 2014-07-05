@@ -3,7 +3,7 @@ form submit=saveChanges
   label=t model.attributes.settings.bezierMaxCurve
   =input type='number' value=setting.bezierMaxCurve placeholderTranslation="view.settings.pixels"
   label=t model.attributes.settings.bezierCurvature
-  =input type='number' value=setting.bezierCurvature placeholderTranslation="view.settings.decimalPercentage"
+  =input type='number' step="0.001" value=setting.bezierCurvature placeholderTranslation="view.settings.decimalPercentage"
   h1=t model.entities
   label=t model.attributes.settings.defaultWidth
   =input type='number' value=setting.defaultWidth placeholderTranslation="view.settings.pixels"
