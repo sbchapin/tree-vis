@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140621122730) do
+ActiveRecord::Schema.define(version: 20140703121523) do
 
   create_table "entities", force: true do |t|
     t.string   "name"
@@ -33,5 +33,14 @@ ActiveRecord::Schema.define(version: 20140621122730) do
 
   add_index "relationships", ["entity_source_id"], name: "index_relationships_on_entity_source_id", using: :btree
   add_index "relationships", ["entity_target_id"], name: "index_relationships_on_entity_target_id", using: :btree
+
+  create_table "settings", force: true do |t|
+    t.decimal  "bezier_curvature", precision: 4, scale: 3
+    t.integer  "bezier_max_curve"
+    t.integer  "default_height"
+    t.integer  "default_width"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end

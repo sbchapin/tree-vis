@@ -1,6 +1,6 @@
 App.RelationshipController = Ember.ObjectController.extend Em.I18n.TranslateableProperties,
   deleteForSureTranslation: 'controller.entity.deleteForSure'
-  
+  needs: ['settings']
   # Padding for actual entity boxes
   staticPadding: 11
   bezierAccomodation: 50
@@ -8,6 +8,11 @@ App.RelationshipController = Ember.ObjectController.extend Em.I18n.Translateable
   # Which connectors should be drawn
   connectors: []
 
+  # Settings
+  maxCurve: (()-> @get('controllers.settings.setting.bezierMaxCurve') || 200).property('controllers.settings.setting.bezierMaxCurve')
+  curvature: (()-> @get('controllers.settings.setting.bezierCurvature') || 0.5).property('controllers.settings.setting.bezierCurvature')
+
+  # Updating observers
   positionAndShapeUpdate: ( () -> 
     x1 = @get('model.entitySource.x')
     xh1 = @get('model.entitySource.width') + @staticPadding
@@ -148,8 +153,7 @@ App.RelationshipController = Ember.ObjectController.extend Em.I18n.Translateable
     startC = "0 0"
     end = "0 0"
     endC = "0 0"
-    curvature = 0.5
-    curvature = Math.max(Math.min(curvature, 1), 0)
+    curvature = Math.max(Math.min(@get('curvature'), 1), 0)
     y1 = @get('model.entitySource.y')
     yh1 = @get('model.entitySource.height') + @staticPadding
     y2 = @get('model.entityTarget.y')
@@ -161,6 +165,7 @@ App.RelationshipController = Ember.ObjectController.extend Em.I18n.Translateable
       curvatureWidth = Math.min(curvatureWidth, @bezierAccomodation*2 + (y1 - (y2+yh2)) )
     
       
+    curvatureWidth = Math.min(@get('maxCurve'), curvatureWidth)
 
     # endpoints
     if activeConnectors[0] == "nw"
@@ -191,9 +196,8 @@ App.RelationshipController = Ember.ObjectController.extend Em.I18n.Translateable
           endC = (@get('width') - @bezierAccomodation) + " " + ((@get('height') - @bezierAccomodation) - curvatureWidth)
         else
           endC = (@get('width') - @bezierAccomodation) - curvatureWidth + " " + (@get('height') - @bezierAccomodation)
-   
     return "M #{start} C #{startC} #{endC} #{end}"
-  ).property('model.entitySource.x', 'model.entitySource.width', 'model.entityTarget.y', 'model.entityTarget.height')
+  ).property('model.entitySource.x', 'model.entitySource.width', 'model.entityTarget.y', 'model.entityTarget.height', 'curvature', 'maxCurve')
 
   actions:
     saveChanges: () -> @get('model').save()

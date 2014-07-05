@@ -1,22 +1,28 @@
 App.IndexController = Ember.ArrayController.extend
-
+  needs: [ 'settings' ]
   isDirty: ( () ->
     isDirty = false
     (@get('entities.content') || []).forEach (entity) -> 
       isDirty ||= true if entity.get("isDirty")
     (@get('relationships.content') || []).forEach (relationship) -> 
       isDirty ||= true if relationship.get("isDirty")
+    isDirty ||= @get('controllers.settings.setting.isDirty')
     isDirty
-  ).property('entities.content.@each.isDirty', 'relationships.content.@each.isDirty')
+  ).property('entities.content.@each.isDirty', 'relationships.content.@each.isDirty', 'controllers.settings.setting.isDirty')
+  
+  # Get the first setting in settings.  Should be refactored to get USER's settings, not first.
+  setting: ( () -> (@get('settings.content') || [null])[0]).property('settings', 'settings.content')
 
   actions:
     saveChanges: () ->
+      @get('controllers.settings').send('saveChanges')
+
       entities = @get('entities.content')
       possiblyDirtyEntities = entities.get('length')
       successCount = 0
 
       # define function to save relationships
-      getRelationships = () => @get('relationships.content').forEach (relationship) =>
+      saveRelationships = () => @get('relationships.content').forEach (relationship) =>
         relationship.save() if relationship.get('isDirty')
 
       # Save all entities first
@@ -24,18 +30,19 @@ App.IndexController = Ember.ArrayController.extend
         if entity.get('isDirty')
           entity.save().then () =>
             successCount += 1
-            console.log successCount
             # Then save all relationships
             if successCount == possiblyDirtyEntities
-              getRelationships()
+              saveRelationships()
         else
           possiblyDirtyEntities -= 1
 
       # If no entities to save, save relationships
       if possiblyDirtyEntities == 0
-        getRelationships()
+        saveRelationships()
       
     rejectChanges: () ->
+      @get('controllers.settings').send('rejectChanges')
+      
       @get('entities.content').forEach (entity) ->
         entity.rollback() if entity.get('isDirty')
       @get('relationships.content').forEach (relationship) ->

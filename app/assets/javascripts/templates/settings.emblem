@@ -1,0 +1,17 @@
+form submit=saveChanges
+  h1=t model.relationships
+  label=t model.attributes.settings.bezierMaxCurve
+  =input type='number' value=setting.bezierMaxCurve placeholderTranslation="view.settings.pixels"
+  label=t model.attributes.settings.bezierCurvature
+  =input type='number' value=setting.bezierCurvature placeholderTranslation="view.settings.decimalPercentage"
+  h1=t model.entities
+  label=t model.attributes.settings.defaultWidth
+  =input type='number' value=setting.defaultWidth placeholderTranslation="view.settings.pixels"
+  label=t model.attributes.settings.defaultHeight
+  =input type='number' value=setting.defaultHeight placeholderTranslation="view.settings.pixels"
+  if setting.isDirty
+    .actions
+      .pull-left: span.btn.warn.entity-warn title=view.rejectTitle click=rejectChanges 
+        .icon-undo
+      .pull-right: button.btn.info.entity-save title=view.saveTitle
+        .icon-checkmark

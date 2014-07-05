@@ -49,6 +49,7 @@ $color-new: #00B25C;
   filter: $func;
 }
 
+@import "menus";
 @import "entities";
 @import "relationships";
 
@@ -87,75 +88,6 @@ dl{
 }
 
 
-//////
-//Menu
-$menu-icon-size: 3.5em;
-.menu{
-	position: fixed;
-	z-index:1000;
-	top:0px;
-	bottom: 0px;
-	background-color: darken(rgba($color-default, 0.95), 20%);
-}
-.menu + .menu{
-	border-left: 1px solid darken(rgba($color-default, 0.90), 20%);
-	background-color: darken(rgba($color-default, 0.95), 22%);
-}
-#main-menu{
-	overflow-x: hidden;
-	left: 0px;
-	width: 120px;
-
-	.button-section{
-		margin: 5px;
-		.btn{
-			font-size: $menu-icon-size;
-			line-height: $menu-icon-size;
-			padding: $menu-icon-size/16;
-			margin: $menu-icon-size/16;
-			display: block;
-		}
-		.sep{
-			display: block;
-			width:100%;
-			border-top: 1px solid darken(rgba($color-default, 0.90), 20%);
-			border-bottom: 1px solid darken(rgba($color-default, 0.90), 15%);
-		}
-		.btn.toggle{
-			&:after{
-				content: "";
-				display: block;
-				position: absolute;
-				top: 50%;
-				margin-top: -8px;
-				width: 0;
-				height: 0;
-				border-style: solid;
-				border-width: 8px 0 8px 8px;
-				border-color: transparent transparent transparent #DDD;
-				right: -16px;
-				@include transition(opacity, 0.1s, ease-in-out);
-				opacity: 0;
-			}
-		}
-		.btn.toggle.active{
-			position: relative;
-			&:after{
-				opacity: 1;
-			}
-		}
-	}
-}
-#settings-menu
-{
-	left: 120px;
-	@include transition(width, 0.10s, ease-in-out);
-	width: 240px;
-	&.hide{
-		width: 0px;
-	}
-}
-
 //////////////
 //Notification
 #notification{
@@ -175,7 +107,7 @@ $menu-icon-size: 3.5em;
 
 ////////
 //Inputs
-input[type=text], input[type=email], textarea {
+input[type=text], input[type=number], input[type=email], textarea {
 	background: #fff;
 	border: 2px solid lighten($color-default, 40%);
 	font-size: 1.2em;

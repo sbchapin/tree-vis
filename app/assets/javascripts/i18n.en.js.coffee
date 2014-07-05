@@ -22,14 +22,27 @@ Em.I18n.translations =
 		entities:
 			header: 'Entities'
 			notification: 'NOTE: Server-side relationships not implemented.  Only mobile support is through touch-punch.'
+		settings:
+			pixels: 'Pixels'
+			decimalPercentage: '0 to 1'
+
 	model:
 		meta:
 			isDirty: 'Is Dirty?'
+		
 		entity: 'Entity'
 		entities: 'Entities'
+
+		relationship: 'Relationship'
+		relationships: 'Relationships'
 
 		attributes:
 			entities:
 				id: 'ID'
 				name: 'Name'
 				description: 'Description'
+			settings:
+				bezierCurvature: 'Curvature'
+				bezierMaxCurve: 'Maximum curve size'
+				defaultHeight: 'Default entity height'
+				defaultWidth: 'Default entity width'

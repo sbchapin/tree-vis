@@ -16,9 +16,8 @@
     =main-menu-toggle press="showSettings" release="hideSettings"
       .icon-cog
 .menu#settings-menu class=settingsMenu:show:hide
-  //- =render 'settings'
-
+  =render 'settings' 
 //- Actual entities render here
-=render 'entities' entities.content.content
+=render 'entities' entities.content
 //- Actual relationships render here
-=render 'relationships' relationships.content.content
+=render 'relationships' relationships.content
