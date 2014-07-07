@@ -8,17 +8,6 @@ App.RelationshipView = Ember.View.extend Em.I18n.TranslateableProperties,
   rejectTitleTranslation:'view.generic.reject'
   saveTitleTranslation:'view.generic.save'
 
-  # view-relevant computed attributes
-  positioningStyle: ( () -> 
-    x = @get('controller.x')
-    width = @get('controller.width')
-    y = @get('controller.y')
-    height = @get('controller.height')
-    if x? && width? && y? && height?
-      return "left: #{x}px; width: #{width}px; top: #{y}px; height: #{height}px;"
-    return undefined
-  ).property('controller.x', 'controller.width', 'controller.y', 'controller.height')
-
   classNameBindings: 'htmlClass'
   htmlClass: ( () -> 
     classes = []

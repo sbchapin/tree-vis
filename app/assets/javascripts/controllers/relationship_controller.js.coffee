@@ -1,60 +1,20 @@
-App.RelationshipController = Ember.ObjectController.extend Em.I18n.TranslateableProperties,
-  deleteForSureTranslation: 'controller.entity.deleteForSure'
+App.RelationshipController = Ember.ObjectController.extend 
   needs: ['settings']
   # Padding for actual entity boxes
   staticPadding: 11
   bezierAccomodation: 50
 
   # Which connectors should be drawn
-  connectors: []
+  connectorSource: 'nw'
+  connectorTarget: 'se'
 
   # Settings
   maxCurve: (()-> @get('controllers.settings.setting.bezierMaxCurve') || 200).property('controllers.settings.setting.bezierMaxCurve')
   curvature: (()-> @get('controllers.settings.setting.bezierCurvature') || 0.5).property('controllers.settings.setting.bezierCurvature')
 
-  # Updating observers
-  positionAndShapeUpdate: ( () -> 
-    x1 = @get('model.entitySource.x')
-    xh1 = @get('model.entitySource.width') + @staticPadding
-    x2 = @get('model.entityTarget.x')
-    xh2 = @get('model.entityTarget.width') + @staticPadding
 
-    y1 = @get('model.entitySource.y')
-    yh1 = @get('model.entitySource.height') + @staticPadding
-    y2 = @get('model.entityTarget.y')
-    yh2 = @get('model.entityTarget.height') + @staticPadding
-    if x1+(xh1/2) < x2+(xh2/2) # west
-      if y1+yh1 < y2 # north
-        @set('connectors', ['nw','se'])
-      else if y1 > y2+yh2 #south
-        @set('connectors', ['ne','sw'])
-      else # middle
-        if y1+(yh1/2) < y2+(yh2/2)
-          @set('connectors', ['nw','se'])
-        else
-          @set('connectors', ['ne','sw'])
-    else # east
-      if y1+yh1 < y2 # north
-        @set('connectors', ['ne','sw'])
-      else if y1 > y2+yh2 # south
-        @set('connectors', ['nw','se'])
-      else # middle
-        if y1+(yh1/2) < y2+(yh2/2)
-          @set('connectors', ['ne','sw'])
-        else
-          @set('connectors', ['nw','se'])
-  ).observes('model.entitySource.x', 'model.entitySource.width', 'model.entityTarget.y', 'model.entityTarget.height').on('init')
-
-  x: ( () -> 
-    x1 = @get('model.entitySource.x')
-    xh1 = @get('model.entitySource.width') + @staticPadding
-    x2 = @get('model.entityTarget.x')
-    xh2 = @get('model.entityTarget.width') + @staticPadding
-
-    y1 = @get('model.entitySource.y')
-    yh1 = @get('model.entitySource.height') + @staticPadding
-    y2 = @get('model.entityTarget.y')
-    yh2 = @get('model.entityTarget.height') + @staticPadding
+  # boundary calculation functions
+  x: (x1, xh1, x2, xh2, y1, yh1, y2, yh2) -> 
     if x1+(xh1/2) < x2+(xh2/2) # west
       if y1+yh1 < y2 # north
         return x1+(xh1/2)-@bezierAccomodation
@@ -67,18 +27,7 @@ App.RelationshipController = Ember.ObjectController.extend Em.I18n.Translateable
         return x2+(xh2/2)-@bezierAccomodation
       else # mid east
         return Math.min(x1, x2 + xh2)-@bezierAccomodation
-  ).property('model.entitySource.x', 'model.entitySource.width', 'model.entityTarget.y', 'model.entityTarget.height')
-
-  y: ( () -> 
-    x1 = @get('model.entitySource.x')
-    xh1 = @get('model.entitySource.width') + @staticPadding
-    x2 = @get('model.entityTarget.x')
-    xh2 = @get('model.entityTarget.width') + @staticPadding
-
-    y1 = @get('model.entitySource.y')
-    yh1 = @get('model.entitySource.height') + @staticPadding
-    y2 = @get('model.entityTarget.y')
-    yh2 = @get('model.entityTarget.height') + @staticPadding
+  y: (x1, xh1, x2, xh2, y1, yh1, y2, yh2) -> 
     if y1+(yh1/2) < y2+(yh2/2)
       if x1+xh1 < x2 || x1 > x2+xh2
         if y1+yh1 < y2 || y1 > y2+yh2
@@ -93,18 +42,7 @@ App.RelationshipController = Ember.ObjectController.extend Em.I18n.Translateable
         return y2+(yh2/2)-@bezierAccomodation
       else # mid bottom
         return Math.min(y1, y2 + yh2)-@bezierAccomodation
-  ).property('model.entitySource.x', 'model.entitySource.height', 'model.entityTarget.y', 'model.entityTarget.height')
-  
-  width: ( () -> 
-    x1 = @get('model.entitySource.x')
-    xh1 = @get('model.entitySource.width') + @staticPadding
-    x2 = @get('model.entityTarget.x')
-    xh2 = @get('model.entityTarget.width') + @staticPadding
-
-    y1 = @get('model.entitySource.y')
-    yh1 = @get('model.entitySource.height') + @staticPadding
-    y2 = @get('model.entityTarget.y')
-    yh2 = @get('model.entityTarget.height') + @staticPadding
+  width: (x1, xh1, x2, xh2, y1, yh1, y2, yh2) -> 
     if x1+(xh1/2) < x2+(xh2/2)
       if y1+yh1 < y2 || y1 > y2+yh2
         return x2+(xh2/2)-(x1+(xh1/2))+(@bezierAccomodation*2)
@@ -115,18 +53,7 @@ App.RelationshipController = Ember.ObjectController.extend Em.I18n.Translateable
         return x1+(xh1/2)-(x2+(xh2/2))+(@bezierAccomodation*2)
       else # mid right
         return Math.abs(x1 - (x2 + xh2))+(@bezierAccomodation*2)
-  ).property('model.entitySource.x', 'model.entitySource.width', 'model.entityTarget.y', 'model.entityTarget.height')
- 
-  height: ( () -> 
-    x1 = @get('model.entitySource.x')
-    xh1 = @get('model.entitySource.width') + @staticPadding
-    x2 = @get('model.entityTarget.x')
-    xh2 = @get('model.entityTarget.width') + @staticPadding
-
-    y1 = @get('model.entitySource.y')
-    yh1 = @get('model.entitySource.height') + @staticPadding
-    y2 = @get('model.entityTarget.y')
-    yh2 = @get('model.entityTarget.height') + @staticPadding
+  height: (x1, xh1, x2, xh2, y1, yh1, y2, yh2) -> 
     if y1+(yh1/2) < y2+(yh2/2)
       if x1+xh1 < x2 || x1 > x2+xh2
         if y1+yh1 <= y2 || y1 >= y2+yh2
@@ -141,63 +68,131 @@ App.RelationshipController = Ember.ObjectController.extend Em.I18n.Translateable
         return y1+(yh1/2)-(y2+(yh2/2))+(@bezierAccomodation*2)
       else # mid bottom
         return Math.abs(y1 - (y2 + yh2))+(@bezierAccomodation*2)
-  ).property('model.entitySource.x', 'model.entitySource.height', 'model.entityTarget.y', 'model.entityTarget.height')
+  
 
-  svgViewBox: ( () -> 
-    "0 0 #{@get('model.entitySource.height')} #{@get('model.entityTarget.height')}"
-  ).property('model.entitySource.height', 'model.entityTarget.height')
+  
+  # cachedProperty is a property caching tool that allows a value of a field to be calculated once every so often; and cached otherwise.
+  #
+  # @param [String] propertyName  Identifier of property to cache
+  # @param [Number] updateInterval  Number of milliseconds that must pass to invalidate cache
+  # @param [Function] toRun  Function to run that calculates the cached value.  Will be bound object scope.
+  #
+  cachedProperty: (propertyName, updateInterval, toRun) ->
+    propertyName = propertyName + @get('id')
+    if @registeredUpdates[propertyName] == undefined
+      @registeredUpdates[propertyName] = {last: toRun.bind(@)(), updated: Date.now()}
+    else if (Date.now() - @registeredUpdates[propertyName].updated) > updateInterval
+      @registeredUpdates[propertyName].updated = Date.now()
+      @registeredUpdates[propertyName].last = toRun.bind(@)()
+    return @registeredUpdates[propertyName].last
+  registeredUpdates: Ember.Object.create()
 
+  # positioningStyle is a property that expresses the relationship's absolute positioning in CSS
+  #
+  positioningStyle: ( () -> @cachedProperty 'positioningStyle', 16, () ->
+    x1 = @get('model.entitySource.x')
+    xh1 = @get('model.entitySource.width') + @staticPadding
+    x2 = @get('model.entityTarget.x')
+    xh2 = @get('model.entityTarget.width') + @staticPadding
+
+    y1 = @get('model.entitySource.y')
+    yh1 = @get('model.entitySource.height') + @staticPadding
+    y2 = @get('model.entityTarget.y')
+    yh2 = @get('model.entityTarget.height') + @staticPadding
+
+    x = @x(x1, xh1, x2, xh2, y1, yh1, y2, yh2)
+    width = @width(x1, xh1, x2, xh2, y1, yh1, y2, yh2)
+    y = @y(x1, xh1, x2, xh2, y1, yh1, y2, yh2)
+    height = @height(x1, xh1, x2, xh2, y1, yh1, y2, yh2)
+
+
+    # connectors update
+    if x1+(xh1/2) < x2+(xh2/2) # west
+      if y1+yh1 < y2 # north
+        @setProperties {connectorSource: 'nw', connectorTarget: 'se'}
+      else if y1 > y2+yh2 #south
+        @setProperties {connectorSource: 'ne', connectorTarget: 'sw'}
+      else # middle
+        if y1+(yh1/2) < y2+(yh2/2)
+          @setProperties {connectorSource: 'nw', connectorTarget: 'se'}
+        else
+          @setProperties {connectorSource: 'ne', connectorTarget: 'sw'}
+    else # east
+      if y1+yh1 < y2 # north
+        @setProperties {connectorSource: 'ne', connectorTarget: 'sw'}
+      else if y1 > y2+yh2 # south
+        @setProperties {connectorSource: 'nw', connectorTarget: 'se'}
+      else # middle
+        if y1+(yh1/2) < y2+(yh2/2)
+          @setProperties {connectorSource: 'ne', connectorTarget: 'sw'}
+        else
+          @setProperties {connectorSource: 'nw', connectorTarget: 'se'}
+
+    return "left: #{x}px; width: #{width}px; top: #{y}px; height: #{height}px;"
+  ).property('model.entitySource.x', 'model.entitySource.width', 'model.entitySource.y', 'model.entitySource.height', 'model.entityTarget.x', 'model.entityTarget.width', 'model.entityTarget.y', 'model.entityTarget.height')
+
+  # svgConnector is a property that expresses the relationship's curvature in vector notation
+  #
   svgConnector: ( () -> 
-    activeConnectors = @get('connectors')
     start = "0 0"
     startC = "0 0"
     end = "0 0"
     endC = "0 0"
     curvature = Math.max(Math.min(@get('curvature'), 1), 0)
+    
+    x1 = @get('model.entitySource.x')
+    xh1 = @get('model.entitySource.width') + @staticPadding
+    x2 = @get('model.entityTarget.x')
+    xh2 = @get('model.entityTarget.width') + @staticPadding
+
     y1 = @get('model.entitySource.y')
     yh1 = @get('model.entitySource.height') + @staticPadding
     y2 = @get('model.entityTarget.y')
     yh2 = @get('model.entityTarget.height') + @staticPadding
-    curvatureWidth = (@get('width') - (@bezierAccomodation*2)) * curvature
+    
+
+    width = @width(x1, xh1, x2, xh2, y1, yh1, y2, yh2)
+    height = @height(x1, xh1, x2, xh2, y1, yh1, y2, yh2)
+
+    curvatureWidth = (width - (@bezierAccomodation*2)) * curvature
     if y1+yh1 < y2 
       curvatureWidth = Math.min(curvatureWidth, @bezierAccomodation*2 + (y2 - (y1+yh1)) )
     if y2+yh2 < y1
       curvatureWidth = Math.min(curvatureWidth, @bezierAccomodation*2 + (y1 - (y2+yh2)) )
-    
-      
     curvatureWidth = Math.min(@get('maxCurve'), curvatureWidth)
 
+
     # endpoints
-    if activeConnectors[0] == "nw"
+    if @connectorSource == "nw"
       start = @bezierAccomodation + " " + @bezierAccomodation
-      if activeConnectors[1] == "se"
+      if @connectorTarget == "se"
         if y1+yh1 < y2 || y2+yh2 < y1
           startC = @bezierAccomodation + " " + (@bezierAccomodation + curvatureWidth)
         else
           startC = @bezierAccomodation + curvatureWidth + " " + @bezierAccomodation
-    if activeConnectors[0] == "ne"
-      start = (@get('width') - @bezierAccomodation) + " " + @bezierAccomodation
-      if activeConnectors[1] == "sw"
+    if @connectorSource == "ne"
+      start = (width - @bezierAccomodation) + " " + @bezierAccomodation
+      if @connectorTarget == "sw"
         if y1+yh1 < y2 || y2+yh2 < y1
-          startC = (@get('width') - @bezierAccomodation) + " " + (@bezierAccomodation + curvatureWidth)
+          startC = (width - @bezierAccomodation) + " " + (@bezierAccomodation + curvatureWidth)
         else
-          startC = (@get('width') - @bezierAccomodation) - curvatureWidth + " " + @bezierAccomodation
-    if activeConnectors[1] == "sw"
-      end = @bezierAccomodation + " " + (@get('height') - @bezierAccomodation)
-      if activeConnectors[0] == "ne"
+          startC = (width - @bezierAccomodation) - curvatureWidth + " " + @bezierAccomodation
+    if @connectorTarget == "sw"
+      end = @bezierAccomodation + " " + (height - @bezierAccomodation)
+      if @connectorSource == "ne"
         if y1+yh1 < y2 || y2+yh2 < y1
-          endC = @bezierAccomodation + " " + (@get('height') - @bezierAccomodation - curvatureWidth)
+          endC = @bezierAccomodation + " " + (height - @bezierAccomodation - curvatureWidth)
         else
-          endC = @bezierAccomodation + curvatureWidth + " " + (@get('height') - @bezierAccomodation)
-    if activeConnectors[1] == "se"
-      end = (@get('width') - @bezierAccomodation) + " " + (@get('height') - @bezierAccomodation)
-      if activeConnectors[0] == "nw"
+          endC = @bezierAccomodation + curvatureWidth + " " + (height - @bezierAccomodation)
+    if @connectorTarget == "se"
+      end = (width - @bezierAccomodation) + " " + (height - @bezierAccomodation)
+      if @connectorSource == "nw"
         if y1+yh1 < y2 || y2+yh2 < y1
-          endC = (@get('width') - @bezierAccomodation) + " " + ((@get('height') - @bezierAccomodation) - curvatureWidth)
+          endC = (width - @bezierAccomodation) + " " + ((height - @bezierAccomodation) - curvatureWidth)
         else
-          endC = (@get('width') - @bezierAccomodation) - curvatureWidth + " " + (@get('height') - @bezierAccomodation)
+          endC = (width - @bezierAccomodation) - curvatureWidth + " " + (height - @bezierAccomodation)
     return "M #{start} C #{startC} #{endC} #{end}"
-  ).property('model.entitySource.x', 'model.entitySource.width', 'model.entityTarget.y', 'model.entityTarget.height', 'curvature', 'maxCurve')
+  ).property('model.entitySource.x', 'model.entitySource.width', 'model.entitySource.y', 'model.entitySource.height', 'model.entityTarget.x', 'model.entityTarget.width', 'model.entityTarget.y', 'model.entityTarget.height', 'curvature', 'maxCurve')
 
   actions:
     saveChanges: () -> @get('model').save()

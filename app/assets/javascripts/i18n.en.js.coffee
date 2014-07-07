@@ -21,7 +21,7 @@ Em.I18n.translations =
 			show: 'Show'
 		entities:
 			header: 'Entities'
-			notification: 'NOTE: Server-side relationships not implemented.  Only mobile support is through touch-punch.'
+			notification: 'NOTE:  Only mobile support is through touch-punch.'
 		settings:
 			pixels: 'Pixels'
 			decimalPercentage: '0 to 1'

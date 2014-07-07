@@ -1,8 +1,8 @@
-.relationship style=view.positioningStyle class=view.htmlClass
+.relationship style=positioningStyle class=view.htmlClass
   .relationship-wrap
-    each connectors
-      div class=this
-    %svg xmlns="http://www.w3.org/2000/svg" / viewBox=svgViewBox
+    div class=connectorSource
+    div class=connectorTarget
+    %svg xmlns="http://www.w3.org/2000/svg"
       %g
         %path d=svgConnector
     .relationship-actions
