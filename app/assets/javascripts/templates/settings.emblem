@@ -1,4 +1,7 @@
 form submit=saveChanges
+  h1=t view.settings.all
+  label=t model.attributes.settings.zoom
+  =input type='number' value=setting.zoom placeholderTranslation="view.settings.percentage"
   h1=t model.relationships
   label=t model.attributes.settings.bezierMaxCurve
   =input type='number' value=setting.bezierMaxCurve placeholderTranslation="view.settings.pixels"

@@ -1,5 +1,5 @@
 class SettingSerializer < ActiveModel::Serializer
-  attributes :id, :bezier_curvature, :bezier_max_curve, :default_height, :default_width
+  attributes :id, :bezier_curvature, :bezier_max_curve, :default_height, :default_width, :zoom
 
   # potentially use 'filter'.  This was a bug with ActiveModelSerializer at the time.
   # def attributes

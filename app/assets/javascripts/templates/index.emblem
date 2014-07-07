@@ -17,7 +17,9 @@
       .icon-cog
 .menu#settings-menu class=settingsMenu:show:hide
   =render 'settings' 
-//- Actual entities render here
-=render 'entities' entities.content
-//- Actual relationships render here
-=render 'relationships' relationships.content
+.graph style=zoomStyle
+  //- Actual entities render here
+  =render 'entities' entities.content
+  //- Actual relationships render here
+  =render 'relationships' relationships.content
+

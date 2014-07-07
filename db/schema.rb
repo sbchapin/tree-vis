@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140703121523) do
+ActiveRecord::Schema.define(version: 20140707095054) do
 
   create_table "entities", force: true do |t|
     t.string   "name"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 20140703121523) do
     t.integer  "default_width"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "zoom",                                     default: 100
   end
 
 end

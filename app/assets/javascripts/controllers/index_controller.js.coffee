@@ -13,6 +13,13 @@ App.IndexController = Ember.ArrayController.extend
   defaultWidth:  ( () ->@get('controllers.settings.setting.defaultWidth') ).property('controllers.settings.setting.defaultWidth')
   defaultHeight: ( () ->@get('controllers.settings.setting.defaultHeight')).property('controllers.settings.setting.defaultHeight')
 
+  zoomStyle: ( () -> 
+    zoom = @get('controllers.settings.setting.zoom')
+    return unless zoom?
+    zoom = Math.abs(zoom)
+    return "zoom:#{zoom}%;"
+  ).property('controllers.settings.setting.zoom')
+
   actions:
     saveChanges: () ->
       @get('controllers.settings').send('saveChanges')

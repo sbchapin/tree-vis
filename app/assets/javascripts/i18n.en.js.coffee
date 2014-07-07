@@ -23,8 +23,10 @@ Em.I18n.translations =
 			header: 'Entities'
 			notification: 'NOTE:  Only mobile support is through touch-punch.'
 		settings:
-			pixels: 'Pixels'
+			all: 'All'
+			percentage: 'Percent'
 			decimalPercentage: '0 to 1'
+			pixels: 'Pixels'
 
 	model:
 		meta:
@@ -46,3 +48,4 @@ Em.I18n.translations =
 				bezierMaxCurve: 'Maximum curve size'
 				defaultHeight: 'Default entity height'
 				defaultWidth: 'Default entity width'
+				zoom: 'Scale'

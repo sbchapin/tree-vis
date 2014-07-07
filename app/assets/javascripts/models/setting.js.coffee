@@ -3,3 +3,4 @@ App.Setting = DS.Model.extend
   bezierMaxCurve: DS.attr('number')
   defaultHeight: DS.attr('number')
   defaultWidth: DS.attr('number')
+  zoom: DS.attr('number')
