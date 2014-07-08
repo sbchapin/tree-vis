@@ -13,14 +13,14 @@ App.EntitiesView = Ember.View.extend Em.I18n.TranslateableProperties,
   startedPicking: null
 
   click: (e) -> @send('cancelPick') if $(e.target).attr('id') == 'entities' || $(e.target).hasClass('dragscrollable-area')
-  keyDown: (e) -> @send('cancelPick') if e.keyCode == 27
 
   didInsertElement: -> 
     $('body').dragscrollable({dragSelector: '.dragscrollable-area',  acceptPropagatedEvent: false});
+    $('body').keydown (e) => @send('cancelPick') if e.keyCode == 27
+
 
   actions:
     startPick: (startingView) ->
-      @$('input.sneaky-input-capture').focus() #focus to allow user to use 'esc'
       @$().addClass('picking')
       @set('isPicking', true)
       @set('startedPicking', startingView)
