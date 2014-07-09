@@ -1,8 +1,8 @@
 //- Sidebar menu goodies
 
 //- Notifications for pushing to production
-#notification
-  =t 'view.entities.notification'
+//- #notification
+//-   =t 'view.entities.notification'
 .menu#main-menu
   .button-section
     span.btn.new title=view.newTitle click="newEntity target='view'"

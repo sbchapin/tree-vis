@@ -31,4 +31,5 @@ $ ->
     xhr.setRequestHeader('X-CSRF-Token', token)
 
 #fix for touch punch
-$('.input').bind 'click', () -> $(this).focus()
+$('.input').bind 'click', () -> $(@).focus()
+$('.input').on 'touchstart', () -> $(@).focus()
